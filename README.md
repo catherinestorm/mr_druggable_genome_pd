@@ -114,7 +114,32 @@ while read EXPOSURE_DATA; do
 done < exposure_data.txt
 ```
 
+9. As a quality control step, rerun the analysis for all genes reaching significance using a clumping threshold of 0.001.
+```bash
+while read EXPOSURE_DATA; do
+    while read OUTCOME; do
+        export EXPOSURE_DATA=${EXPOSURE_DATA}
+        export OUTCOME=${OUTCOME}
+        nohup bash ${EXPOSURE_DATA}_${OUTCOME}/script_conservative_r2_0.001_${EXPOSURE_DATA}_${OUTCOME}.sh &> ${EXPOSURE_DATA}_${OUTCOME}/nohup_script_conservative_r2_0.001_${EXPOSURE_DATA}_${OUTCOME}.log &
+    done < outcomes.txt
+done < exposure_data.txt
+```
 
+
+## Steps that are specific to this analysis
+1. Create final results files and generate a report of the number of genes tested vs reaching significance for each exposure-data-outcome combination.
+```bash
+
+mkdir full_results
+Rscript final_results_report.R &> nohup_final_results_report.log &
+
+wait
+
+cat nohup_final_results_report.log | sed "s/\[1\] //g" | sed "s/[\"]//g" > full_results/final_results_report.txt
+
+```
+
+2. Display the results in a forest plot
 
 
 ## Citation
