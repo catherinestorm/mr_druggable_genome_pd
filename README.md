@@ -10,20 +10,109 @@ For full methods, please see...
 
 ## Pipeline Overview
 
-1. Install required tools
-
-`bash ./mr_druggable_genome_pd/shell/installing_tools.sh`
-
-
-2. Download required data
-
 Notes
 * You will need to provide the druggable genome file. The publicly available version of the druggable genome provided by [Finan at al.](https://pubmed.ncbi.nlm.nih.gov/28356508/) can be used instead of `druggable_genome_new.txt`. ?rewrite code so it works for this
 * You will need to provide the GWAS summary statistics for your outcome.
 * This study used outcome data for PD risk (discovery and replication phase), age at onset, and progression provided by the [International Parkinson's disease Genomics consortium](http://pdgenetics.org/resources)
 
-`bash ./mr_druggable_genome_pd/shell/eqtl_data_download.sh`
 
+1. Install required tools
+
+```bash
+bash ./mr_druggable_genome_pd/shell/installing_tools.sh
+```
+
+
+2. Download required data
+
+```bash
+bash ./mr_druggable_genome_pd/shell/eqtl_data_download.sh
+```
+
+
+3. Choose your exposure data and outcome data
+Edit as appropriate
+```bash
+echo "psychencode
+eqtlgen" > exposure_data.txt
+```
+
+
+For discovery analyses:
+```bash
+echo "nalls2014
+cont_HY
+cont_MMSE
+cont_MOCA
+cont_SEADL
+cont_UPDRS1_scaled
+cont_UPDRS2_scaled
+cont_UPDRS3_scaled
+cont_UPDRS4_scaled
+cont_UPDRS_scaled
+surv_DEMENTIA
+surv_DEPR
+surv_DYSKINESIAS" > outcomes.txt
+```
+
+
+For replication analyses, make sure your outcome begins with "replication_":
+```bash
+echo "replication_risk
+replication_aao" > outcomes.txt
+```
+
+
+4. Prepare the data for the Mendelian randomization analysis.
+Note: if you are using your own GWAS data you will need to edit these files
+```bash
+bash ./mr_druggable_genome_pd/shell/data_prep.sh
+```
+
+5. Generate scripts that can be run in parallel
+```bash
+while read EXPOSURE_DATA; do
+    while read OUTCOME; do
+        export EXPOSURE_DATA=${EXPOSURE_DATA}
+        export OUTCOME=${OUTCOME}
+        export DISCOVERY_OUTCOME="nalls2014" #type in
+        mkdir ${EXPOSURE_DATA}_${OUTCOME}
+        
+        nohup bash generate_parallel_scripts.sh &> ${EXPOSURE_DATA}_${OUTCOME}/nohup_generate_parallel_scripts_${EXPOSURE_DATA}_${OUTCOME}.log &
+    done < outcomes.txt
+done < exposure_data.txt
+```
+
+6. Run Mendelian randomization for the druggable genome using all the exposure data and outcome data you have specified.
+```bash
+echo "exposure_data,exposure,outcome" > exposures_to_remove.txt
+
+while read EXPOSURE_DATA; do
+    while read OUTCOME; do
+        export EXPOSURE_DATA=${EXPOSURE_DATA}
+        export OUTCOME=${OUTCOME}
+        nohup bash run_liberal_scripts_all_nohup.sh &> nohup_run_liberal_scripts_all.log &
+    done < outcomes4.txt
+done < exposure_data1.txt
+```
+
+7. Some genes cause errors during clumping or MR analysis methods using a linkage disequilibrium LD matrix. The below script will put any genes that need to be removed in `exposures_to_remove.txt` and rerun any scripts that encountered an error. Note: you may need to rerun this step a few times until all genes that cause an error are removed.
+```bash
+nohup bash run_liberal_scripts_failed_nohup.sh &> nohup_run_liberal_scripts_failed.log &
+```
+
+8. For each exposure-data-outcome combination, put all the results into one results file.
+```bash
+while read EXPOSURE_DATA; do
+    while read OUTCOME; do
+        export EXPOSURE_DATA=${EXPOSURE_DATA}
+        export OUTCOME=${OUTCOME}
+        cd ${EXPOSURE_DATA}_${OUTCOME}/results
+        nohup Rscript ../combine_results_liberal_r2_0.2.R &> ../${EXPOSURE_DATA}_${OUTCOME}/nohup_combine_results_liberal_r2_0.2_${EXPOSURE_DATA}_${OUTCOME}.log &
+        cd
+    done < outcomes.txt
+done < exposure_data.txt
+```
 
 
 
