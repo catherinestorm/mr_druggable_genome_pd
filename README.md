@@ -126,7 +126,7 @@ done < exposure_data.txt
 ```
 
 
-## Steps that are specific to this analysis
+## Steps that aren't generic yet
 1. Create final results files and generate a report of the number of genes tested vs reaching significance for each exposure-data-outcome combination.
 ```bash
 
