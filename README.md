@@ -31,6 +31,7 @@ bash ./mr_druggable_genome_pd/shell/eqtl_data_download.sh
 
 
 3. Choose your exposure data and outcome data
+
 Edit as appropriate
 ```bash
 echo "psychencode
