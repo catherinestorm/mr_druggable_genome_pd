@@ -5,7 +5,7 @@ This is a collection of scripts used to complete a Mendelian randomization analy
 * This study used expression quantitative trait loci (eQTL) provided by the [eQTLGen](https://eqtlgen.org) and [PsychENCODE](http://resource.psychencode.org) consortia.
 * This study used outcome data for PD risk (discovery and replication phase), age at onset, and progression provided by the [International Parkinson's disease Genomics consortium](http://pdgenetics.org/resources)
 
-This code can be used for a Mendelian randomization analysis of the druggable genome using any QTL data and any disease outcome. Note!
+This code can be used for a Mendelian randomization analysis of the druggable genome using any QTL data and any disease outcome.
 * You will need to provide the druggable genome file. The publicly available version of the druggable genome provided by [Finan at al.](https://pubmed.ncbi.nlm.nih.gov/28356508/) can be used instead of `druggable_genome_new.txt`. ?rewrite code so it works for this
 * You will need to provide the GWAS summary statistics for your outcome of interest and create `read_exposure_data_${YourExposureData}.R` and `read_exposure_data_${YourOutcomeData}.R` scripts to suit these. Use `read_exposure_data_generic.R` and `read_exposure_data_generic.R` as a template.
 
@@ -126,7 +126,7 @@ done < exposure_data.txt
 ```
 
 
-## Steps that are specific to this analysis
+## Steps that aren't generic yet
 1. Create final results files and generate a report of the number of genes tested vs reaching significance for each exposure-data-outcome combination.
 ```bash
 
