@@ -81,7 +81,7 @@ cat ld_matrix_trouble_exposures1.txt | sed 's/\/.*log- -//' | sed 's/_/ /' >> ld
 wait
 
 #### update the file with exposures to remove
-nohup Rscript extract_exposures_causing_trouble.R &> nohup_extract_exposures_causing_trouble.log &
+nohup Rscript ./mr_druggable_genome_pd/R/extract_exposures_causing_trouble.R &> nohup_extract_exposures_causing_trouble.log &
 
 wait
 

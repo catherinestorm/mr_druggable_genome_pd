@@ -6,22 +6,22 @@
 ## keep only eqtls within 5 kb of the target gene and calculate betas or SEs where needed
 
 while read EXPOSURE_DATA; do
-        nohup Rscript ./mr_druggable_genome_pd/R/data_prep_${EXPOSURE_DATA}.R &> ./mr_druggable_genome_pd/R/nohup_data_prep_${EXPOSURE_DATA}.log &
+        nohup Rscript ./mr_druggable_genome_pd/R/data_prep_${EXPOSURE_DATA}.R &> nohup_data_prep_${EXPOSURE_DATA}.log &
 done < exposure_data.txt
 
 wait
 
 
 ## process discovery-phase PD risk data for the discovery phase
-nohup Rscript ./mr_druggable_genome_pd/R/data_prep_nalls2014.R &> ./mr_druggable_genome_pd/R/nohup_data_prep_nalls2014.log &
+nohup Rscript ./mr_druggable_genome_pd/R/data_prep_nalls2014.R &> nohup_data_prep_nalls2014.log &
 
 
 ## process replication-phase PD risk & age at onset data
-nohup Rscript ./mr_druggable_genome_pd/R/data_prep_replication.R &> ./mr_druggable_genome_pd/R/nohup_data_prep_replication.log &
+nohup Rscript ./mr_druggable_genome_pd/R/data_prep_replication.R &> nohup_data_prep_replication.log &
 
 
 ## process progression data
-nohup Rscript ./mr_druggable_genome_pd/R/data_prep_iwaki2019.R &> ./mr_druggable_genome_pd/R/nohup_data_prep_iwaki2019.log &
+nohup Rscript ./mr_druggable_genome_pd/R/data_prep_iwaki2019.R &> nohup_data_prep_iwaki2019.log &
 
 wait
 

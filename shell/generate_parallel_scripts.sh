@@ -7,20 +7,20 @@
             
                
             # generate generic script for MR – clumping at r2 < 0.2
-            cat read_exposure_data_${EXPOSURE_DATA}.R > ${EXPOSURE_DATA}_${OUTCOME}/script_liberal_r2_0.2_${EXPOSURE_DATA}_${OUTCOME}.R
+            cat ./mr_druggable_genome_pd/R/read_exposure_data_${EXPOSURE_DATA}.R > ${EXPOSURE_DATA}_${OUTCOME}/script_liberal_r2_0.2_${EXPOSURE_DATA}_${OUTCOME}.R
             
-            cat read_outcome_data_${OUTCOME}.R >> ${EXPOSURE_DATA}_${OUTCOME}/script_liberal_r2_0.2_${EXPOSURE_DATA}_${OUTCOME}.R
+            cat ./mr_druggable_genome_pd/R/read_outcome_data_${OUTCOME}.R >> ${EXPOSURE_DATA}_${OUTCOME}/script_liberal_r2_0.2_${EXPOSURE_DATA}_${OUTCOME}.R
             
-            cat mr_analysis_liberal_r2_0.2.R >> ${EXPOSURE_DATA}_${OUTCOME}/script_liberal_r2_0.2_${EXPOSURE_DATA}_${OUTCOME}.R
+            cat ./mr_druggable_genome_pd/R/mr_analysis_liberal_r2_0.2.R >> ${EXPOSURE_DATA}_${OUTCOME}/script_liberal_r2_0.2_${EXPOSURE_DATA}_${OUTCOME}.R
             
             
             
             # generate generic script for MR with stricter clump (r2 < 0.001)
-            cat read_exposure_data_${EXPOSURE_DATA}.R > ${EXPOSURE_DATA}_${OUTCOME}/script_conservative_r2_0.001_${EXPOSURE_DATA}_${OUTCOME}.R
+            cat ./mr_druggable_genome_pd/R/read_exposure_data_${EXPOSURE_DATA}.R > ${EXPOSURE_DATA}_${OUTCOME}/script_conservative_r2_0.001_${EXPOSURE_DATA}_${OUTCOME}.R
 
-            cat read_outcome_data_${OUTCOME}.R >> ${EXPOSURE_DATA}_${OUTCOME}/script_conservative_r2_0.001_${EXPOSURE_DATA}_${OUTCOME}.R
+            cat ./mr_druggable_genome_pd/R/read_outcome_data_${OUTCOME}.R >> ${EXPOSURE_DATA}_${OUTCOME}/script_conservative_r2_0.001_${EXPOSURE_DATA}_${OUTCOME}.R
             
-            cat mr_analysis_conservative_r2_0.001.R >> ${EXPOSURE_DATA}_${OUTCOME}/script_conservative_r2_0.001_${EXPOSURE_DATA}_${OUTCOME}.R
+            cat ./mr_druggable_genome_pd/R/mr_analysis_conservative_r2_0.001.R >> ${EXPOSURE_DATA}_${OUTCOME}/script_conservative_r2_0.001_${EXPOSURE_DATA}_${OUTCOME}.R
     
     echo "export START=1
                 export END='no_end'
