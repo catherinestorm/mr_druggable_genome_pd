@@ -85,8 +85,7 @@ nohup Rscript extract_exposures_causing_trouble.R &> nohup_extract_exposures_cau
 
 wait
 
-###
- rerun the failed scripts
+### rerun the failed scripts
     if [[ -s failed_scripts_liberal.txt ]] ; then
         while read FAILED; do
             export LOG=$(sed "s/script_/nohup_script_/g" <<< ${FAILED})
