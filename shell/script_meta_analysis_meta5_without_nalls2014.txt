@@ -1,0 +1,76 @@
+# meta-analyse by typing in the below command
+# ./generic-metal/metal < script_meta_analysis_meta5_without_nalls2014.txt
+
+
+#for standard-error-based analysis, uncomment the below line
+SCHEME   STDERR
+
+#to turn on genomic control, uncomment the below line
+# GENOMICCONTROL ON
+
+
+
+#=========================labels=========================
+SEPARATOR	TAB
+MARKER		markerID
+ALLELE		minorAllele majorAllele
+FREQ		maf
+EFFECT		beta
+STDERR		se
+PVAL		P
+
+
+#====================files & weights=====================
+
+
+DEFAULTWEIGHT	3443
+PROCESS toMeta.SPAIN3.tab
+
+
+DEFAULTWEIGHT	964
+PROCESS toMeta.SHUL.tab
+
+
+DEFAULTWEIGHT	1487
+PROCESS toMeta.MCGILL_NO_AGE.tab
+
+
+DEFAULTWEIGHT	938
+PROCESS toMeta.OSLO_NO_AGE.tab
+
+
+DEFAULTWEIGHT	528
+PROCESS toMeta.PPMI.tab
+
+
+DEFAULTWEIGHT	879
+PROCESS toMeta.FINLAND_no_age.tab
+
+
+#DEFAULTWEIGHT	999
+#PROCESS toMeta.HBS.tab
+
+
+DEFAULTWEIGHT	1680
+PROCESS toMeta.COURAGE_UK.tab
+
+
+DEFAULTWEIGHT	794
+PROCESS toMeta.PDBP.tab
+
+
+DEFAULTWEIGHT	1208
+PROCESS toMeta.TUBI_no_overlap.tab
+
+DEFAULTWEIGHT	919
+PROCESS toMeta.VANCE.tab
+
+
+
+ANALYSE
+
+
+
+
+
+
