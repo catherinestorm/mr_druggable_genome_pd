@@ -30,7 +30,7 @@ bash ./mr_druggable_genome_pd/shell/eqtl_data_download.sh
 ```
 
 
-3. Choose your exposure data and outcome data
+3. Select exposure data and outcome data
 
 Edit as appropriate
 ```bash
@@ -57,15 +57,14 @@ surv_DYSKINESIAS" > outcomes.txt
 ```
 
 
-For replication analyses, make sure your outcome begins with "replication_":
+For replication analyses, make sure the outcome should begin with "replication_":
 ```bash
 echo "replication_risk
 replication_aao" > outcomes.txt
 ```
 
 
-4. Prepare the data for the Mendelian randomization analysis.
-Note: if you are using your own GWAS data you will need to edit these files
+4. Prepare the data for the Mendelian randomization analysis. Note: if you are using your own GWAS data you will need to edit these files and create appropriate `read_exposure_data` and `read_outcome_data` files
 ```bash
 bash ./mr_druggable_genome_pd/shell/data_prep.sh
 ```
@@ -79,7 +78,7 @@ while read EXPOSURE_DATA; do
         export DISCOVERY_OUTCOME="nalls2014" #type in
         mkdir ${EXPOSURE_DATA}_${OUTCOME}
         
-        nohup bash generate_parallel_scripts.sh &> ${EXPOSURE_DATA}_${OUTCOME}/nohup_generate_parallel_scripts_${EXPOSURE_DATA}_${OUTCOME}.log &
+        bash ./mr_druggable_genome_pd/shell/generate_parallel_scripts.sh
     done < outcomes.txt
 done < exposure_data.txt
 ```
@@ -92,14 +91,14 @@ while read EXPOSURE_DATA; do
     while read OUTCOME; do
         export EXPOSURE_DATA=${EXPOSURE_DATA}
         export OUTCOME=${OUTCOME}
-        nohup bash run_liberal_scripts_all_nohup.sh &> nohup_run_liberal_scripts_all.log &
-    done < outcomes4.txt
-done < exposure_data1.txt
+        nohup bash ./mr_druggable_genome_pd/shell/run_liberal_scripts_all_nohup.sh &> ./mr_druggable_genome_pd/shell/nohup_run_liberal_scripts_all.log &
+    done < outcomes.txt
+done < exposure_data.txt
 ```
 
 7. Some genes cause errors during clumping or MR analysis methods using a linkage disequilibrium LD matrix. The below script will put any genes that need to be removed in `exposures_to_remove.txt` and rerun any scripts that encountered an error. Note: you may need to rerun this step a few times until all genes that cause an error are removed.
 ```bash
-nohup bash run_liberal_scripts_failed_nohup.sh &> nohup_run_liberal_scripts_failed.log &
+nohup bash ./mr_druggable_genome_pd/shell/run_liberal_scripts_failed_nohup.sh &> ./mr_druggable_genome_pd/shell/nohup_run_liberal_scripts_failed.log &
 ```
 
 8. For each exposure-data-outcome combination, put all the results into one results file.
@@ -108,9 +107,9 @@ while read EXPOSURE_DATA; do
     while read OUTCOME; do
         export EXPOSURE_DATA=${EXPOSURE_DATA}
         export OUTCOME=${OUTCOME}
-        cd ${EXPOSURE_DATA}_${OUTCOME}/results
-        nohup Rscript ../combine_results_liberal_r2_0.2.R &> ../${EXPOSURE_DATA}_${OUTCOME}/nohup_combine_results_liberal_r2_0.2_${EXPOSURE_DATA}_${OUTCOME}.log &
-        cd
+        cd ./mr_druggable_genome_pd/${EXPOSURE_DATA}_${OUTCOME}/results
+        nohup Rscript ../R/combine_results_liberal_r2_0.2.R &> ../${EXPOSURE_DATA}_${OUTCOME}/nohup_combine_results_liberal_r2_0.2_${EXPOSURE_DATA}_${OUTCOME}.log &
+        cd ..
     done < outcomes.txt
 done < exposure_data.txt
 ```
@@ -121,7 +120,7 @@ while read EXPOSURE_DATA; do
     while read OUTCOME; do
         export EXPOSURE_DATA=${EXPOSURE_DATA}
         export OUTCOME=${OUTCOME}
-        nohup bash ${EXPOSURE_DATA}_${OUTCOME}/script_conservative_r2_0.001_${EXPOSURE_DATA}_${OUTCOME}.sh &> ${EXPOSURE_DATA}_${OUTCOME}/nohup_script_conservative_r2_0.001_${EXPOSURE_DATA}_${OUTCOME}.log &
+        nohup bash ./mr_druggable_genome_pd/${EXPOSURE_DATA}_${OUTCOME}/script_conservative_r2_0.001_${EXPOSURE_DATA}_${OUTCOME}.sh &> ./mr_druggable_genome_pd/${EXPOSURE_DATA}_${OUTCOME}/nohup_script_conservative_r2_0.001_${EXPOSURE_DATA}_${OUTCOME}.log &
     done < outcomes.txt
 done < exposure_data.txt
 ```
@@ -132,7 +131,7 @@ done < exposure_data.txt
 ```bash
 
 mkdir full_results
-Rscript final_results_report.R &> nohup_final_results_report.log &
+Rscript ./mr_druggable_genome_pd/R/final_results_report.R &> ./mr_druggable_genome_pd/nohup_final_results_report.log &
 
 wait
 
