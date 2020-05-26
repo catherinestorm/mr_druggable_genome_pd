@@ -1,6 +1,8 @@
 library("readr")
+library("plyr")
 suppressMessages(library(dplyr, warn.conflict = FALSE, quietly = TRUE))
 library("stringr")
+
 
 
 EXPOSURE_DATA <- Sys.getenv("EXPOSURE_DATA")
@@ -48,7 +50,7 @@ write.table(total, str_c("full_results/full_results_",OUTCOME,".txt"), sep = ","
 sign <- read_tsv(str_c(EXPOSURE_DATA, "_",OUTCOME ,"/results/full_results_",EXPOSURE_DATA,"_",OUTCOME,"_significant.txt"), col_types = cols())
 
 # add druggability info & calculate odds ratio
-if (plyr::empty(sign) == F) {
+if (empty(sign) == F) {
 
 sign <- left_join(sign, druggable_genome, by = "exposure")
 
@@ -86,7 +88,17 @@ final_results_report_new <- data.frame(EXPOSURE_DATA, OUTCOME, length(unique(exp
 names(final_results_report_new) <- names(final_results_report)
 
 final_results_report <- distinct(rbind(final_results_report, final_results_report_new))
-#final_results_report[,(nrow(final_results_report)+1)] <- data.frame("total", OUTCOME, length(unique(total$exposure)), length(unique(sign_total$exposure)))
+tot_count  <- data.frame("total", OUTCOME, length(unique(total$exposure)), length(unique(sign_total$exposure)))
+names(tot_count) <- names(final_results_report)
+
+
+
+if (empty(final_results_report[final_results_report$exposure == "total" & final_results_report$outcome == OUTCOME,]) == T) {
+final_results_report <- rbind(final_results_report,tot_count)
+} else {
+final_results_report[final_results_report$exposure == "total" & final_results_report$outcome == OUTCOME,"n_tested"] <- length(unique(total$exposure))
+final_results_report[final_results_report$exposure == "total" & final_results_report$outcome == OUTCOME,"n_significant"] <- length(unique(sign_total$exposure))
+}
 
 write.table(final_results_report, "full_results/final_results_report.txt", sep = ",", row.names = F)
 
