@@ -125,19 +125,19 @@ while read EXPOSURE_DATA; do
 done < exposure_data.txt
 ```
 
-
-## Steps that aren't generic yet
-1. Create final results files and generate a report of the number of genes tested vs reaching significance for each exposure-data-outcome combination.
+10. Create final results files and generate a report of the number of genes tested vs reaching significance for each exposure-data-outcome combination.
 ```bash
 
 mkdir full_results
-Rscript ./mr_druggable_genome_pd/R/final_results_report.R &> ./mr_druggable_genome_pd/nohup_final_results_report.log &
 
-wait
+echo "exposure,outcome,n_tested,n_significant" > full_results/final_results_report.txt
 
-cat nohup_final_results_report.log | sed "s/\[1\] //g" | sed "s/[\"]//g" > full_results/final_results_report.txt
+bash ./mr_druggable_genome_pd/shell/final_results_report.sh
 
 ```
+
+
+## Steps that aren't generic yet
 
 2. Display the results in a forest plot
 
