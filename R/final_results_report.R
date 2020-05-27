@@ -73,6 +73,7 @@ write.table(sign_total, str_c("full_results/significant_results_",OUTCOME,".txt"
 
 # qc
 exposure_qc <- read_tsv(str_c(EXPOSURE_DATA,"_",OUTCOME ,"/results/full_results_liberal_r2_0.2_egger_cochransq_",EXPOSURE_DATA,"_",OUTCOME,".txt"), col_types = cols())
+exposure_qc$tissue <- EXPOSURE_DATA
 
 total_qc <- distinct(rbind(total_qc, exposure_qc))
 sign_total_qc_new <- subset(total_qc, total_qc$exposure %in% sign$exposure)

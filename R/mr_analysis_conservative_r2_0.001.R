@@ -73,13 +73,6 @@ mr_mrbase0.001[data_for_qval, "fdr_qval"] <- p.adjust(mr_mrbase0.001[data_for_qv
 mr_mrbase0.001$clump_tresh <- "0.001"
 
 
-
-#if (startsWith(OUTCOME, "replication_") == TRUE) {
-mr_mrbase0.001_sign <- mr_mrbase0.001[mr_mrbase0.001$p < 0.05,]
-#} else {
-#mr_mrbase0.001_sign <- mr_mrbase0.001[mr_mrbase0.001$fdr_qval < 0.05,]
-#}
-
 write.table(mr_mrbase0.001, str_c(EXPOSURE_DATA, "_",OUTCOME, "/results/", "full_results_conservative_r2_0.001_",EXPOSURE_DATA, "_", OUTCOME, ".txt"), col.names=T, row.names = F, sep = "\t")
 
 
@@ -92,35 +85,14 @@ liberal_full$tissue <- EXPOSURE_DATA
 write.table(liberal_full, str_c(EXPOSURE_DATA, "_", OUTCOME, "/results/", "full_results_", EXPOSURE_DATA, "_", OUTCOME, ".txt"), sep = "\t", row.names = F)
 
 
-liberal_sign0 <- readr::read_tsv(str_c(EXPOSURE_DATA, "_", OUTCOME, "/results/", "full_results_liberal_r2_0.2_", EXPOSURE_DATA, "_", OUTCOME, "_significant.txt"))
-liberal_sign0$clump_tresh <- "0.2"
+liberal_sign <- readr::read_tsv(str_c(EXPOSURE_DATA, "_", OUTCOME, "/results/", "full_results_liberal_r2_0.2_", EXPOSURE_DATA, "_", OUTCOME, "_significant.txt"))
+liberal_sign$clump_tresh <- "0.2"
 
-liberal_sign <- liberal_sign0[liberal_sign0$exposure %in% mr_mrbase0.001_sign$exposure,]
 
-if (plyr::empty(liberal_sign) == TRUE) {
-
-liberal_sign0$tissue <- EXPOSURE_DATA
-
-message2 <- str_c("no genes significant in conservative analysis (r2 = 0.001)")
-
-write.table(liberal_sign0, str_c(EXPOSURE_DATA, "_", OUTCOME, "/results/", "full_results_", EXPOSURE_DATA, "_", OUTCOME, "_significant.txt"), sep = "\t", row.names = F)
-
-} else {
-
-liberal_sign <- distinct(rbind(mr_mrbase0.001_sign,liberal_sign))
-
+liberal_sign <- distinct(rbind(mr_mrbase0.001,liberal_sign))
 liberal_sign$tissue <- EXPOSURE_DATA
 
 write.table(liberal_sign, str_c(EXPOSURE_DATA, "_", OUTCOME, "/results/", "full_results_", EXPOSURE_DATA, "_", OUTCOME, "_significant.txt"), sep = "\t", row.names = F)
 
-
-message2 <- str_c(length(unique(liberal_sign$exposure)), " genes significant in both main (r2 = 0.2) and conservative analysis (r2 = 0.001)")
 }
-
-message1 <- str_c(length(unique(liberal_full$exposure)), " genes tested overall")
-
-}
-
-print(message1)
-print(message2)
 print("mission_complete")

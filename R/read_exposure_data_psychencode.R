@@ -42,7 +42,7 @@ exp0$samplesize.exposure <- 1387
 
 if (startsWith(OUTCOME, "replication_") == TRUE) {
     DISCOVERY_OUTCOME <- Sys.getenv("DISCOVERY_OUTCOME")
-    TO_REPLICATE <- read.table(str_c(EXPOSURE_DATA, "_", DISCOVERY_OUTCOME, "/results/", "full_results_", EXPOSURE_DATA, "_", DISCOVERY_OUTCOME, "_significant.txt"), sep = "\t", header = T, colClasses = "character")
+    TO_REPLICATE <- read.table(str_c(EXPOSURE_DATA, "_", DISCOVERY_OUTCOME, "/results/full_results_liberal_r2_0.2_", EXPOSURE_DATA,"_", DISCOVERY_OUTCOME, "_significant.txt"), sep = "\t", header = T, colClasses = "character")
     END <- length(unique(exp0$exposure))
 } else if (is.na(END) == TRUE) {
     TO_REPLICATE <- exp0

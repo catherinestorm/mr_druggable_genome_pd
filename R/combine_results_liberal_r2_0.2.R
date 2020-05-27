@@ -29,9 +29,11 @@ full_results[data_for_qval, "fdr_qval"] <- p.adjust(full_results[data_for_qval,"
 
 
 if (startsWith(OUTCOME, "replication_") == TRUE) {
-full_results_significant <- subset(full_results, full_results$p < 0.05)
+wald_ivw_sign <- full_results[data_for_qval,]
+wald_ivw_sign <- wald_ivw_sign[as.numeric(wald_ivw_sign$p) < 0.05,]
+full_results_significant <- subset(full_results, full_results$exposure %in% wald_ivw_sign$exposure)
 } else {
-full_results_significant <- subset(full_results, full_results$fdr_qval < 0.05)
+full_results_significant <- subset(full_results, as.numeric(full_results$fdr_qval) < 0.05)
 }
 
 full_results_significant <- full_results[full_results$exposure %in% full_results_significant$exposure, ]
