@@ -31,7 +31,8 @@ exp0 <- read_exposure_data(
   other_allele_col = "OtherAllele",
   pval_col = "Pvalue",
   phenotype_col = "GeneSymbol",
-  samplesize_col = "NrSamples" #double check if this is it
+  samplesize_col = "NrSamples",
+  min_pval = 1e-400
 )
 
 # keep only a subset of genes 

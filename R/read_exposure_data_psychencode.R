@@ -30,7 +30,8 @@ exp0 <- read_exposure_data(
   effect_allele_col = "ALT",
   other_allele_col = "REF",
   pval_col = "nominal_pval",
-  phenotype_col = "gene.exposure"
+  phenotype_col = "gene.exposure",
+  min_pval = 1e-400
 )
 
 # add sample size
