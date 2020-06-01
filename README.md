@@ -134,6 +134,9 @@ echo "exposure,outcome,n_tested,n_significant" > full_results/final_results_repo
 
 bash ./mr_druggable_genome_pd/shell/final_results_report.sh
 
+Rscript combine_dat_steiger.R
+
+
 ```
 
 
