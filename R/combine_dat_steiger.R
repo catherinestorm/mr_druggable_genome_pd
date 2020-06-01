@@ -13,4 +13,4 @@ temp$tissue <- gsub("\\_.*", "", temp$tissue)
 dat_steiger_all <- distinct(rbind(dat_steiger_all, temp))
 }
 
-write.table(dat_steiger_all, "full_results/dat_steiger_all.txt", row.names = F, sep = "\t")
+write.table(dat_steiger_all, "full_results/dat_steiger_liberal_all.txt", row.names = F, sep = "\t")
