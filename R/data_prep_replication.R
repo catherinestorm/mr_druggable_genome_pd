@@ -27,7 +27,12 @@ psychencode$chr_pos <- str_c(psychencode$chr, ":",psychencode$position)
 
 
 # read in replication risk data
-replication_data_risk <- read_tsv(unzip("outcome_data/METAANALYSIS1_standarderror.TBL.zip"))
+replication_data_risk <- read_tsv("outcome_data/METAANALYSIS_samplesize_1.tbl")
+
+replication_data_risk$beta <- replication_data_risk$Zscore / sqrt(2 * replication_data_risk$Freq1 * (1- replication_data_risk$Freq1) * (replication_data_risk$Weight + replication_data_risk$Zscore^2))
+                                                  
+replication_data_risk$se <- 1 / sqrt(2 * replication_data_risk$Freq1 * (1- replication_data_risk$Freq1) * (replication_data_risk$Weight + (replication_data_risk$Zscore)^2))
+
 
 # join to add rsids to the gwas data
 replication_data_risk <- left_join(replication_data_risk, eqtlgen[,c("chr_pos", "rsid_eqtlgen")], by = c("MarkerName" = "chr_pos"))

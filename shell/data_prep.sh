@@ -16,6 +16,14 @@ wait
 nohup Rscript ./mr_druggable_genome_pd/R/data_prep_nalls2014.R &> nohup_data_prep_nalls2014.log &
 
 
+## meta-analyse PD risk GWAS datasets for replication-phase PD risk
+./generic-metal/metal < ./mr_druggable_genome_pd/shell/meta_analysis_meta5_without_nalls2014.txt
+
+wait
+
+nohup Rscript ./mr_druggable_genome_pd/R/meta_analysis_meta5_without_nalls2014_qc.R &> nohup_meta_analysis_meta5_without_nalls2014_qc.log &
+
+
 ## process replication-phase PD risk & age at onset data
 nohup Rscript ./mr_druggable_genome_pd/R/data_prep_replication.R &> nohup_data_prep_replication.log &
 

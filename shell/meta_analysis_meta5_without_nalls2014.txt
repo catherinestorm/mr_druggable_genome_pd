@@ -1,0 +1,81 @@
+
+
+########### SETTINGS ###########
+
+## weights
+SCHEME SAMPLESIZE
+
+
+##track allele frequencies
+AVERAGEFREQ ON
+MINMAXFREQ ON
+
+
+
+
+########### LABELS ###########
+SEPARATOR	TAB
+MARKER		markerID
+ALLELE		minorAllele majorAllele
+FREQ		maf
+EFFECT		beta
+STDERR		se
+PVAL		P
+
+
+
+
+########### FILES AND WEIGHTS ###########
+
+DEFAULTWEIGHT	3443
+PROCESS outcome_data/toMeta.SPAIN3.tab
+
+
+DEFAULTWEIGHT	964
+PROCESS outcome_data/toMeta.SHUL.tab
+
+
+DEFAULTWEIGHT	1487
+PROCESS outcome_data/toMeta.MCGILL_NO_AGE.tab
+
+
+DEFAULTWEIGHT	938
+PROCESS outcome_data/toMeta.OSLO_NO_AGE.tab
+
+
+DEFAULTWEIGHT	528
+PROCESS outcome_data/toMeta.PPMI.tab
+
+
+DEFAULTWEIGHT	879
+PROCESS outcome_data/toMeta.FINLAND_no_age.tab
+
+
+DEFAULTWEIGHT	999
+PROCESS outcome_data/toMeta.HBS.tab
+
+
+DEFAULTWEIGHT	1680
+PROCESS outcome_data/toMeta.COURAGE_UK.tab
+
+
+DEFAULTWEIGHT	794
+PROCESS outcome_data/toMeta.PDBP.tab
+
+
+DEFAULTWEIGHT	1208
+PROCESS outcome_data/toMeta.TUBI_no_overlap.tab
+
+DEFAULTWEIGHT	919
+PROCESS outcome_data/toMeta.VANCE.tab
+
+
+
+
+########### NAME OUTPUT FILE ###########
+OUTFILE outcome_data/METAANALYSIS_samplesize_ .tbl
+
+
+
+
+ANALYSE
