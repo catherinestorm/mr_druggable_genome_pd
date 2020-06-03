@@ -32,14 +32,14 @@ bash ./mr_druggable_genome_pd/shell/eqtl_data_download.sh
 
 3. Select exposure data and outcome data
 
-Edit as appropriate
+Specify your exposure data. Example below.
 ```bash
 echo "psychencode
 eqtlgen" > exposure_data.txt
 ```
 
 
-For discovery analyses:
+For discovery analyses, specify your outcomes. Example below.
 ```bash
 echo "nalls2014
 cont_HY
@@ -57,11 +57,14 @@ surv_DYSKINESIAS" > outcomes.txt
 ```
 
 
-For replication analyses, make sure the outcome should begin with "replication_":
+For replication analyses, the outcome should begin with "replication_", and you need to specify your discovery outcome. This will make sure your pvalue threshold for significance is the non-adjusted pvalue, and that you only run the replication step for discovered genes. Example below.
 ```bash
 echo "replication_risk
 replication_aao" > outcomes.txt
+
+DISCOVERY_OUTCOME="nalls2014"
 ```
+
 
 
 4. Prepare the data for the Mendelian randomization analysis. Note: if you are using your own GWAS data you will need to edit these files and create appropriate `read_exposure_data` and `read_outcome_data` files
@@ -75,7 +78,7 @@ while read EXPOSURE_DATA; do
     while read OUTCOME; do
         export EXPOSURE_DATA=${EXPOSURE_DATA}
         export OUTCOME=${OUTCOME}
-        export DISCOVERY_OUTCOME="nalls2014" #type in
+        export DISCOVERY_OUTCOME=${DISCOVERY_OUTCOME}
         mkdir ${EXPOSURE_DATA}_${OUTCOME}
         
         bash ./mr_druggable_genome_pd/shell/generate_parallel_scripts.sh
