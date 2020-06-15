@@ -62,7 +62,7 @@ For replication analyses, the outcome should begin with "replication_", and you 
 echo "replication_risk
 replication_aao" > outcomes.txt
 
-DISCOVERY_OUTCOME="nalls2014"
+export DISCOVERY_OUTCOME="nalls2014"
 ```
 
 
@@ -78,9 +78,9 @@ while read EXPOSURE_DATA; do
     while read OUTCOME; do
         export EXPOSURE_DATA=${EXPOSURE_DATA}
         export OUTCOME=${OUTCOME}
-        export DISCOVERY_OUTCOME=${DISCOVERY_OUTCOME}
+        export DISCOVERY_OUTCOME=${DISCOVERY_OUTCOME} # will be ignored if not a replication outcome
         mkdir ${EXPOSURE_DATA}_${OUTCOME}
-        
+
         bash ./mr_druggable_genome_pd/shell/generate_parallel_scripts.sh
     done < outcomes.txt
 done < exposure_data.txt
