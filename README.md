@@ -1,7 +1,7 @@
 # mr_druggable_genome_pd
 
 ## Introduction
-This is a collection of scripts used in a Mendelian randomization analysis for the druggable genome in Parkinson's disease. Full methods can be found [here]().
+This is a collection of scripts was used in a Mendelian randomization analysis for the druggable genome in Parkinson's disease. Full methods can be found [here]().
 
 This code can be used for any QTL data and any disease outcome.
 * You will need to provide the druggable genome file. The publicly available version of the druggable genome provided by [Finan at al.](https://pubmed.ncbi.nlm.nih.gov/28356508/) can be used instead of `druggable_genome_new.txt`.
@@ -11,7 +11,8 @@ This code can be used for any QTL data and any disease outcome.
 
 ## Citation
 If you use the code, please cite:
-Storm et al. 2020 "Finding drug targeting mechanisms with genetic evidence for Parkinson’s disease." bioRxiv.
+Storm et al. 2020 "Finding drug targeting mechanisms with genetic evidence for Parkinson’s disease."
+(edit once the paper is on biorxiv)
 
 
 
@@ -26,7 +27,7 @@ bash ./mr_druggable_genome_pd/shell/installing_tools.sh
 ```
 
 
-2. Download/upload your QTL and disease GWAS data. eQTL data from the PsychENCODE and eQTLGen consortia can be accessed as shown below. For pQTL data, check out [this very helpful blog post](http://www.metabolomix.com/a-table-of-all-published-gwas-with-proteomics/).
+2. Download/upload your QTL and disease GWAS data. eQTL data from the PsychENCODE and eQTLGen consortia can be accessed as shown below. If you are looking for a comprehensive list of pQTL data available, check out [this very helpful blog post](http://www.metabolomix.com/a-table-of-all-published-gwas-with-proteomics/).
 
 ```bash
 bash ./mr_druggable_genome_pd/shell/eqtl_data_download.sh
@@ -133,13 +134,9 @@ while read EXPOSURE_DATA; do
 done < exposure_data.txt
 ```
 
-10. Final formatting step. (a) Put all the results per outcome into one file and generate a report of the number of genes tested vs reaching significance for each exposure-data-outcome combination. (b) Put the MR input data into one file. (c) Put all the results for all outcomes into one file. (d) Compare the direction of effect between any discovery-replication outcome pairs.
-
-
+10. Some data formatting steps.
 ```bash
 mkdir full_results
-
-echo "exposure,outcome,n_tested,n_significant" > full_results/final_results_report.txt
 
 bash ./mr_druggable_genome_pd/shell/final_results_report.sh
 
@@ -147,9 +144,16 @@ Rscript ./mr_druggable_genome_pd/R/combine_dat_steiger.R
 
 Rscript ./mr_druggable_genome_pd/R/format_supplement.R
 
+```
+
+
+11. Check if the direction of effect is consistent between any discovery cohorts and replication cohorts.
+
+
+```bash
 while read OUTCOME; do
     export OUTCOME=${OUTCOME}
-    export DISCOVERY_OUTCOME="${DISCOVERY_OUTCOME}
+    export DISCOVERY_OUTCOME=${DISCOVERY_OUTCOME}
 
     nohup Rscript ./mr_druggable_genome_pd/R/check_direction_of_effect.R &> full_results/metric_check_direction_of_effect_${OUTCOME}_${DISCOVERY_OUTCOME}.log
 done < outcomes.txt

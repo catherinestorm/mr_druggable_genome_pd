@@ -1,3 +1,6 @@
+# Put the Steiger-filtered MR input data into one file. 
+
+
 library(readr)
 suppressMessages(library(dplyr, warn.conflict = FALSE, quietly = TRUE))
 
