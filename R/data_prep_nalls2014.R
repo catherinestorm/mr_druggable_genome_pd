@@ -8,7 +8,7 @@ nalls2014 <- read_tsv("outcome_data/AllResults_updatedrsid.txt")
 
 nalls2014$chr_pos <- str_c("chr",nalls2014$Chr, ":",nalls2014$Bp)
 
-# read in eqtl data with
+# read in eqtl data
 eqtlgen <- read.table("eqtl_data_eqtlgen/eqtlgen_exposure_dat_snps_5kb_window.txt", sep = "\t",colClasses = "character", header = T)
 
 eqtlgen <- distinct(eqtlgen[,c("SNP", "SNPChr", "SNPPos")])

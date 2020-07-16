@@ -24,7 +24,7 @@ REMOVE1 <- subset(REMOVE, REMOVE$outcome == OUTCOME & REMOVE$exposure_data == EX
 ## load exposure data
 
 exp0 <- read_exposure_data(
-  filename = "type in path to the file you with to use,
+  filename = "type in path to the file you with to use",
   sep = "separator between columns e.g. '/t' or ',' ",
   snp_col = "type in the name of the column that includes RS identifiers",
   beta_col = "type in the name of the column that includes the beta regression coefficients",
@@ -37,7 +37,7 @@ exp0 <- read_exposure_data(
 )
 
 
-## keep only a subset of genes 
+## keep only a subset of genes
 
 if (startsWith(OUTCOME, "replication_") == TRUE) {
     DISCOVERY_OUTCOME <- Sys.getenv("DISCOVERY_OUTCOME")
@@ -53,6 +53,3 @@ if (startsWith(OUTCOME, "replication_") == TRUE) {
 
 exp_to_keep <- unique(exp0$exposure)[START:END]
 exp <- subset(exp0, (exp0$exposure %in% exp_to_keep) & !(exp0$exposure %in% REMOVE1$exposure) & (exp0$exposure %in% TO_REPLICATE$exposure))
-
-
-

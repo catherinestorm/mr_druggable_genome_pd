@@ -105,7 +105,7 @@ while read EXPOSURE_DATA; do
 done < exposure_data.txt
 ```
 
-7. Some genes cause errors during clumping or MR analysis methods using a linkage disequilibrium LD matrix. The below script will put any genes that need to be removed in `exposures_to_remove.txt` and rerun any scripts that encountered an error. Note: you may need to rerun this step a few times until all genes that cause an error are removed.
+7. Remove genes that throw errors. Note: you may need to rerun this step a few times until all genes that cause an error are removed.
 ```bash
 nohup bash ./mr_druggable_genome_pd/shell/run_liberal_scripts_failed_nohup.sh &> ./mr_druggable_genome_pd/shell/nohup_run_liberal_scripts_failed.log &
 ```
@@ -123,7 +123,7 @@ while read EXPOSURE_DATA; do
 done < exposure_data.txt
 ```
 
-9. As a quality control step, rerun the analysis for all genes reaching significance using a clumping threshold of 0.001.
+9. Rerun the analysis for all significant genes using the clumping threshold r2 = 0.001.
 ```bash
 while read EXPOSURE_DATA; do
     while read OUTCOME; do
@@ -160,14 +160,7 @@ done < outcomes.txt
 ```
 
 
-## The following steps are not generic, but can be edited to suit a new project.
-
-1. pQTL data prep
-```bash
-./mr_druggable_genome_pd/R/data_prep_pqtl.R
-```
-
-2. Display the results from all outcomes in a forest plot
+13. Generate forest plots. This script is not generic for any exposure/outcome data.
 
 ```bash
 mkdir figures

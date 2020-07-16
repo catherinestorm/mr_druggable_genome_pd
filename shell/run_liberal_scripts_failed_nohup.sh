@@ -1,6 +1,9 @@
 #!/bin/bash
 
+# RE-RUNNING FAILED SCRIPTS
+
 # Some genes cause errors during clumping or MR analysis methods using a linkage disequilibrium LD matrix. The below script will put any genes that need to be removed in `exposures_to_remove.txt` and rerun any scripts that encountered an error. Note: you may need to rerun this step a few times until all genes that cause an error are removed
+
 
 ## Make a list of all failed scripts
 echo -n > failed_scripts_liberal_logs.txt

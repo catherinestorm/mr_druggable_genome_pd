@@ -22,12 +22,15 @@ for (i in 1:length(file_list_res)) {
   full_results <- rbind(full_results, temp_data)
 }
 
+# add FDR correction for the number of genes tested (applied to Wald ratio/IVW methods)
 full_results <- as.data.frame(full_results)
 full_results$fdr_qval <- NA
 data_for_qval <- which(full_results$method == "IVW" | full_results$method == "Inverse variance weighted" | full_results$method == "Wald ratio")
 full_results[data_for_qval, "fdr_qval"] <- p.adjust(full_results[data_for_qval,"p"], method = "fdr")
 
 
+# for replication data, keep all genes that are nominally significant using the wald ratio/IVW
+# for discovery data, keep all genes that are significant after multiple testing using the wald ratio/IVW
 if (startsWith(OUTCOME, "replication_") == TRUE) {
 wald_ivw_sign <- full_results[data_for_qval,]
 wald_ivw_sign <- wald_ivw_sign[as.numeric(wald_ivw_sign$p) < 0.05,]
@@ -36,8 +39,10 @@ full_results_significant <- subset(full_results, full_results$exposure %in% wald
 full_results_significant <- subset(full_results, as.numeric(full_results$fdr_qval) < 0.05)
 }
 
+# keep the results from all MR methods for the significant outcomes
 full_results_significant <- full_results[full_results$exposure %in% full_results_significant$exposure, ]
 
+# write out the data
 write.table(full_results, str_c("full_results_liberal_r2_0.2_", EXPOSURE_DATA, "_", OUTCOME, ".txt"), sep = "\t", row.names = F)
 
 write.table(full_results_significant, str_c("full_results_liberal_r2_0.2_", EXPOSURE_DATA, "_", OUTCOME, "_significant.txt"), sep = "\t", row.names = F)

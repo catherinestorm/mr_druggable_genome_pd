@@ -1,6 +1,6 @@
 #!/bin/bash
 
-########## RUNNING ALL LIBERAL SCRIPTS ##########
+# RUNNING ALL LIBERAL SCRIPTS
 
 if [[ ${OUTCOME} == replication_* ]] || [[ ${EXPOSURE_DATA} == replication_* ]]; then
 

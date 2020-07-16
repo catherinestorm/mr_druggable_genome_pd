@@ -25,10 +25,10 @@ for (i in 1:length(significant_res_files)) {
 significant_res <- subset(significant_res, !(significant_res$p == 0))
 
 
-
+# read in druggable genome data and add druggability tier to the data
 druggable_new <- read.csv("druggable_genome_new.txt", sep = "\t", header = T, colClasses = "character")
 
-significant_res_with_druggability_info <- left_join(significant_res, 
+significant_res_with_druggability_info <- left_join(significant_res,
                                          druggable_new[,c("gene_display_label","priority","chr_name", "gene_start", "gene_end")],
                                          by = c("exposure" = "gene_display_label"))
 

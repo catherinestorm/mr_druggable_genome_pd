@@ -84,7 +84,7 @@ write.table(sign_total_qc, str_c("full_results/significant_results_",OUTCOME,"_q
 
 
 
-
+# add summary info of the number of genes tested to the final results report
 final_results_report_new <- data.frame(EXPOSURE_DATA, OUTCOME, length(unique(exposure$exposure)), length(unique(sign$exposure)))
 names(final_results_report_new) <- names(final_results_report)
 
@@ -102,6 +102,3 @@ final_results_report[final_results_report$exposure == "total" & final_results_re
 }
 
 write.table(final_results_report, "full_results/final_results_report.txt", sep = ",", row.names = F)
-
-
-

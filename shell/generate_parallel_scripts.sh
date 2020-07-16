@@ -1,3 +1,4 @@
+#!/bin/bash
 
 ########## GENERATE SCRIPTS THAT CAN BE RUN IN PARALLEL ##########
 
@@ -52,7 +53,7 @@ if [[ ${OUTCOME} == replication_* ]] || [[ ${EXPOSURE_DATA} == replication_* ]];
 
 else
             if [[ $EXPOSURE_DATA == eqtlgen* ]]; then
-            for ((k=1; k <= 2777;k+=50)) # should be {1..2777..50}
+            for ((k=1; k <= 2777;k+=50))
                 do
 
                 echo "export START=${k}
@@ -67,7 +68,7 @@ else
             fi
 
             if [[ $EXPOSURE_DATA == psychencode* ]]; then
-            for ((k=1; k <= 2448;k+=50)) # should be {1..2448..50}
+            for ((k=1; k <= 2448;k+=50))
                 do
 
                 echo "export START=${k}

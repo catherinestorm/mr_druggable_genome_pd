@@ -53,3 +53,8 @@ surv_HY3" > progression_outcomes.txt
 while read OUTCOME; do
     cat ./mr_druggable_genome_pd/R/read_outcome_data_progression.R > ./mr_druggable_genome_pd/R/read_outcome_data_${OUTCOME}.R
 done < progression_outcomes.txt
+
+
+
+# pQTL data
+nohup Rscript ./mr_druggable_genome_pd/R/data_prep_pqtl.R &> nohup_data_data_prep_pqtl.log &

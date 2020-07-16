@@ -14,4 +14,3 @@ not_completed$run <- gsub(".sh", "", not_completed$V1)
 
 
 write.table(not_completed$run, "failed_scripts_liberal.txt", col.names=F, row.names=F, quote=F)
-
