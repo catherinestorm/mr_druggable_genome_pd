@@ -23,7 +23,6 @@ sudo apt-get install r-base -y
 sudo su - -c "R -e \"install.packages('tidyverse', repos='http://cran.rstudio.com/')\""
 sudo su - -c "R -e \"install.packages('readr', repos='http://cran.rstudio.com/')\""
 sudo su - -c "R -e \"install.packages('dplyr', repos='http://cran.rstudio.com/')\""
-#sudo su - -c "R -e \"install.packages('tidyr', repos='http://cran.rstudio.com/')\""
 sudo su - -c "R -e \"install.packages('devtools', repos='http://cran.rstudio.com/')\""
 sudo su - -c "R -e \"install.packages('stringr', repos='http://cran.rstudio.com/')\""
 sudo su - -c "R -e \"install.packages('forestplot', repos='http://cran.rstudio.com/')\""

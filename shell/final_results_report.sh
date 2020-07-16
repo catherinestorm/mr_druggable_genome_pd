@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #  Put all the results per outcome into one file and generate a report of the number of genes tested vs reaching significance for each exposure-data-outcome combination.
 
 echo "exposure,outcome,n_tested,n_significant" > full_results/final_results_report.txt

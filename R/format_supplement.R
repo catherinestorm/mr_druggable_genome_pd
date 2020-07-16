@@ -1,11 +1,12 @@
 
 
-### this script will put the results and quality control metrics for all significant outcomes into one data frame
+### this script will put the results and quality control metrics for all outcomes into one data frame
 
 library(dplyr)
 library(readr)
 
 
+# FOR SIGNIFICANT GENES
 
 # make a list of the files we want to combine
 significant_files <- list.files(path = "full_results", pattern = "significant_results*",full.names = TRUE)
@@ -46,6 +47,52 @@ for (i in 1:length(significant_qc_files)) {
 }
 
 write.table(significant_qc, "full_results/significant_genes_qc_all_outcomes.txt", row.names = F, sep = "\t")
+
+
+
+
+
+
+
+
+
+# FOR ALL RESULTS
+# make a list of the files we want to combine
+full_files <- list.files(path = "full_results", pattern = "full_results*",full.names = TRUE)
+full_res_files <- full_files[!(grepl("qc", full_files))]
+full_qc_files <- full_files[(grepl("qc", full_files))]
+
+
+
+# populate a data frame with the results for signficant genes across all outcomes
+full_res <- data.frame()
+
+for (i in 1:length(full_res_files)) {
+  temp <- read_csv(full_res_files[i], col_types = cols())
+  full_res <- distinct(rbind(full_res,temp))
+}
+
+full_res <- subset(full_res, !(full_res$p == 0))
+
+
+write.table(full_res, "full_results/all_genes_results_all_outcomes.txt", row.names = F, sep = "\t")
+
+
+
+# populate a data frame with the results for signficant genes across all outcomes
+full_qc <- data.frame()
+
+for (i in 1:length(full_qc_files)) {
+  temp <- read_csv(full_qc_files[i], col_types = cols())
+  full_qc <- distinct(rbind(full_qc,temp))
+}
+
+write.table(full_qc, "full_results/all_genes_qc_all_outcomes.txt", row.names = F, sep = "\t")
+
+
+
+
+
 
 
 
