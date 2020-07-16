@@ -1,12 +1,12 @@
 # pqtl data prep for druggable genome replication
 
-setwd("~/Documents/UCL_PhD/PhD_Project/druggable_genome")
+
 library(dplyr)
 library(stringr)
 
 # genes to replicate
-druggable_genome <- read.csv("data/druggable_genome_new.txt", sep = "\t", header = T, stringsAsFactors = F)
-sign <- read.csv("~/Documents/UCL_PhD/PhD_Project/druggable_genome/snps_5kb_window/masterscripts/full_results/significant_results_all_outcomes.txt", sep = "\t", header = T, stringsAsFactors = F)
+druggable_genome <- read.csv("druggable_genome_new.txt", sep = "\t", header = T, stringsAsFactors = F)
+sign <- as.data.frame(read_tsv("full_results/significant_genes_results_all_outcomes.txt"))
 sign <- subset(sign, sign$outcome != "nalls2014")
 
 #druggable_genome_sign <- druggable_genome
@@ -16,6 +16,9 @@ length(unique(druggable_genome_sign$gene_display_label))
 
 
 # read in pqtl data
+# obtained from supplementary material of the relevant papers
+# please see the original publication
+
 emilsson2018 <- read.csv("pqtl_data/emilsson_2018_for_mr.csv", header = T, stringsAsFactors = F)
 emilsson2018_replicate <- subset(emilsson2018, emilsson2018$Protein %in% druggable_genome_sign$gene_display_label)
 emilsson2018_replicate$gene_and_source <- str_c(emilsson2018_replicate$Protein, "_emilsson2018")
@@ -48,11 +51,17 @@ sun_2018_replicate_keep <- sun_2018_replicate[,c("Sentinel.variant.", "Chr","pos
 names(sun_2018_replicate_keep) <- c("snp", "chr","pos","effect_allele", "other_allele","eaf","beta","se","pval","protein","gene_and_source","sample_size")
 
 
+
+
+# combine
 complete_pqtl_data_for_druggable_genome_replication <- emilsson2018_replicate_keep %>% rbind(hillary_2019_replicate_keep) %>% rbind(suhre_2017_replicate_keep) %>% rbind(sun_2018_replicate_keep)
-complete_pqtl_data_for_druggable_genome_replication <- distinct(complete_pqtl_data_for_druggable_genome_replication) # note that DHPR == QDPR and CTSB == Cathepsin B
+
+complete_pqtl_data_for_druggable_genome_replication <- distinct(complete_pqtl_data_for_druggable_genome_replication)
+
 
 gene_chr_pos <- druggable_genome_sign[,c("gene_display_label","chr_name","gene_start","gene_end")]
 names(gene_chr_pos) <- c("protein","gene_chr","gene_start","gene_end")
+
 
 complete_pqtl_data_for_druggable_genome_replication1 <- left_join(complete_pqtl_data_for_druggable_genome_replication, gene_chr_pos, by = "protein")
 complete_pqtl_data_for_druggable_genome_replication1$cis_trans <- NA
@@ -61,4 +70,4 @@ complete_pqtl_data_for_druggable_genome_replication1$cis_trans[complete_pqtl_dat
 
 length(unique(complete_pqtl_data_for_druggable_genome_replication1$gene_and_source))
 
-#write.table(complete_pqtl_data_for_druggable_genome_replication, "pqtl_data/complete_pqtl_data_for_druggable_genome_replication.txt",sep ="\t",row.names = F)
+write.table(complete_pqtl_data_for_druggable_genome_replication, "pqtl_data/complete_pqtl_data_for_druggable_genome_replication.txt",sep ="\t",row.names = F)

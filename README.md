@@ -1,14 +1,17 @@
 # mr_druggable_genome_pd
 
 ## Introduction
-This is a collection of scripts used to complete a Mendelian randomization analysis for the druggable genome in Parkinson's disease. The method uses expression quantitative trait loci (eQTL) from blood and brain tissue for druggable genes to predict the efficacy of using these medications in Parkinson's disease. Full methods can be found [here]().
-* This study used expression quantitative trait loci (eQTL) provided by the [eQTLGen](https://eqtlgen.org) and [PsychENCODE](http://resource.psychencode.org) consortia.
-* This study used outcome data for PD risk (discovery and replication phase), age at onset, and progression provided by the [International Parkinson's disease Genomics consortium](http://pdgenetics.org/resources)
+This is a collection of scripts used in a Mendelian randomization analysis for the druggable genome in Parkinson's disease. Full methods can be found [here]().
 
-This code can be used for a Mendelian randomization analysis of the druggable genome using any QTL data and any disease outcome.
-* You will need to provide the druggable genome file. The publicly available version of the druggable genome provided by [Finan at al.](https://pubmed.ncbi.nlm.nih.gov/28356508/) can be used instead of `druggable_genome_new.txt`. ?rewrite code so it works for this
-* You will need to provide the GWAS summary statistics for your outcome of interest and create `read_exposure_data_${YourExposureData}.R` and `read_exposure_data_${YourOutcomeData}.R` scripts to suit these. Use `read_exposure_data_generic.R` and `read_exposure_data_generic.R` as a template.
+This code can be used for any QTL data and any disease outcome.
+* You will need to provide the druggable genome file. The publicly available version of the druggable genome provided by [Finan at al.](https://pubmed.ncbi.nlm.nih.gov/28356508/) can be used instead of `druggable_genome_new.txt`.
+* You will need to provide the GWAS summary statistics for your outcome of interest and create `read_exposure_data_${YOUR_EXPOSURE_DATA}.R` and `read_exposure_data_${YOUR_OUTCOME_DATA}.R` scripts to suit these. Use `read_exposure_data_generic.R` and `read_exposure_data_generic.R` as a template.
 
+
+
+## Citation
+If you use the code, please cite:
+Storm et al. 2020 "Finding drug targeting mechanisms with genetic evidence for Parkinson’s disease." bioRxiv.
 
 
 
@@ -23,14 +26,14 @@ bash ./mr_druggable_genome_pd/shell/installing_tools.sh
 ```
 
 
-2. Download required data
+2. Download/upload your QTL and disease GWAS data. eQTL data from the PsychENCODE and eQTLGen consortia can be accessed as shown below. For pQTL data, check out [this very helpful blog post](http://www.metabolomix.com/a-table-of-all-published-gwas-with-proteomics/).
 
 ```bash
 bash ./mr_druggable_genome_pd/shell/eqtl_data_download.sh
 ```
 
 
-3. Select exposure data and outcome data
+3. Select exposure data and outcome data.
 
 Specify your exposure data. Example below.
 ```bash
@@ -61,6 +64,8 @@ For replication analyses, the outcome should begin with "replication_", and you 
 ```bash
 echo "replication_risk
 replication_aao" > outcomes.txt
+
+echo "replication_pqtl" > outcomes.txt
 
 export DISCOVERY_OUTCOME="nalls2014"
 ```
@@ -132,7 +137,6 @@ done < exposure_data.txt
 
 
 ```bash
-
 mkdir full_results
 
 echo "exposure,outcome,n_tested,n_significant" > full_results/final_results_report.txt
@@ -145,27 +149,24 @@ Rscript ./mr_druggable_genome_pd/R/format_supplement.R
 
 while read OUTCOME; do
     export OUTCOME=${OUTCOME}
-    export DISCOVERY_OUTCOME="nalls2014" #type in or leave blank
+    export DISCOVERY_OUTCOME="${DISCOVERY_OUTCOME}
 
-    nohup Rscript check_direction_of_effect.R &> full_results/metric_check_direction_of_effect_${OUTCOME}_${DISCOVERY_OUTCOME}.log
+    nohup Rscript ./mr_druggable_genome_pd/R/check_direction_of_effect.R &> full_results/metric_check_direction_of_effect_${OUTCOME}_${DISCOVERY_OUTCOME}.log
 done < outcomes.txt
-
-
 ```
 
 
 ## The following steps are not generic, but can be edited to suit a new project.
 
-1. Display the results from all outcomesin a forest plot
+1. pQTL data prep
+```bash
+./mr_druggable_genome_pd/R/data_prep_pqtl.R
+```
+
+2. Display the results from all outcomes in a forest plot
 
 ```bash
 mkdir figures
 
-Rscript make_forest_plots.R
+Rscript ./mr_druggable_genome_pd/R/make_forest_plots.R
 ```
-
-
-
-## Citation
-If you use the code, please cite:
-Storm et al. 2020 "Finding drug targeting mechanisms with genetic evidence for Parkinson’s disease." bioRxiv.
