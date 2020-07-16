@@ -128,7 +128,9 @@ while read EXPOSURE_DATA; do
 done < exposure_data.txt
 ```
 
-10. Create final results files and generate a report of the number of genes tested vs reaching significance for each exposure-data-outcome combination.
+10. Final formatting step. (a) Put all the results per outcome into one file and generate a report of the number of genes tested vs reaching significance for each exposure-data-outcome combination. (b) Put the MR input data into one file. (c) Put all the results for all outcomes into one file. (d) Compare the direction of effect between any discovery-replication outcome pairs.
+
+
 ```bash
 
 mkdir full_results
@@ -137,18 +139,33 @@ echo "exposure,outcome,n_tested,n_significant" > full_results/final_results_repo
 
 bash ./mr_druggable_genome_pd/shell/final_results_report.sh
 
-Rscript combine_dat_steiger.R
+Rscript ./mr_druggable_genome_pd/R/combine_dat_steiger.R
+
+Rscript ./mr_druggable_genome_pd/R/format_supplement.R
+
+while read OUTCOME; do
+    export OUTCOME=${OUTCOME}
+    export DISCOVERY_OUTCOME="nalls2014" #type in or leave blank
+
+    nohup Rscript check_direction_of_effect.R &> full_results/metric_check_direction_of_effect_${OUTCOME}_${DISCOVERY_OUTCOME}.log
+done < outcomes.txt
 
 
 ```
 
 
-## Steps that aren't generic yet
+## The following steps are not generic, but can be edited to suit a new project.
 
-2. Display the results in a forest plot
+1. Display the results from all outcomesin a forest plot
+
+```bash
+mkdir figures
+
+Rscript make_forest_plots.R
+```
+
 
 
 ## Citation
 If you use the code, please cite:
-add citation
-note to see methods
+Storm et al. 2020 "Finding drug targeting mechanisms with genetic evidence for Parkinson’s disease." bioRxiv.

@@ -10,7 +10,7 @@ while read EXPOSURE_DATA; do
 
         grep -L "mission_complete" ${EXPOSURE_DATA}_${OUTCOME}/${EXPOSURE_DATA}_parallel_scripts/nohup_script_liberal_r2_0.2_${EXPOSURE_DATA}_${OUTCOME}*.log >> failed_scripts_liberal_logs.txt
 
-                
+
     done < outcomes.txt
 done < exposure_data.txt
 
@@ -28,12 +28,12 @@ wait
 ## Identify genes that cause an error and run the failed scripts
 if [[ -s failed_scripts_liberal.txt ]] ; then
     echo "Uh oh, some scripts ran into an error. Removing genes and re-running..."
-    
-    
+
+
     rm *trouble_exposures*
 
 ### for errors in the clumping step
-#### grab the lines with the error to find the codes for exposures we want to remove                  
+#### grab the lines with the error to find the codes for exposures we want to remove
 while read LOGFILE; do grep -B 3 'Error: lexical error' "${LOGFILE}"; done < failed_scripts_liberal_logs.txt > clumping_trouble_exposures.txt
 
 wait
@@ -65,7 +65,7 @@ cat clumping_trouble_exposures4.txt | sed 's/\/.*log:/ /' | sed 's/_/ /' >> clum
 
 ### for errors in the LD matrix step
 
-#### grab the lines with the error to find the codes for exposures we want to remove                  
+#### grab the lines with the error to find the codes for exposures we want to remove
 while read LOGFILE; do grep --with-filename -B 3 'Error in' "${LOGFILE}"; done < failed_scripts_liberal_logs.txt > ld_matrix_trouble_exposures.txt
 
 wait
@@ -91,7 +91,7 @@ wait
             export LOG=$(sed "s/script_/nohup_script_/g" <<< ${FAILED})
             nohup bash ${FAILED}.sh &> ${LOG}.log &
             wait
-        done < failed_scripts_liberal.txt  
+        done < failed_scripts_liberal.txt
     else
         echo "Error! Is failed_scripts_liberal.txt empty?"
     fi

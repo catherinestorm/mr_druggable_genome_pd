@@ -53,7 +53,7 @@ dat0.001 <- clump_data(dat)
 steiger_nalls0.001 <- directionality_test(dat0.001)
 
 steiger_nalls0.001_1 <- subset(steiger_nalls0.001, correct_causal_direction == TRUE)
-  
+
 dat_steiger0.001 <- subset(dat0.001, dat0.001$exposure %in% steiger_nalls0.001_1$exposure)
 
 write.table(dat_steiger0.001, str_c(EXPOSURE_DATA, "_",OUTCOME, "/data/", "dat_steiger_conservative_r2_0.001_",EXPOSURE_DATA, "_", OUTCOME, ".txt"), col.names=T, row.names = F, sep = "\t")

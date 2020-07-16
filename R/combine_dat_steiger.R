@@ -2,15 +2,7 @@ library(readr)
 suppressMessages(library(dplyr, warn.conflict = FALSE, quietly = TRUE))
 
 dat_all0 <- list.files(pattern = "dat_steiger_liberal", recursive = T, full.names = T)
-dat_all <- dat_all0[780:790] 
-
-# 750:800 problem
-#750:780 ok
-#500:1000 problem 
-# 500:750 ok 
-# 900:1000 ok
-# 1:500 ok 
-# 1000:1475 ok
+dat_all <- dat_all0[780:790]
 
 dat_steiger_all <- data.frame()
 

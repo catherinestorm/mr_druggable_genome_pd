@@ -8,7 +8,7 @@ sudo apt-get install gcc make zlib1g-dev libbz2-dev liblzma-dev libssl-dev libcu
 
 # Install METAL for GWAS meta-analysis
 wget http://csg.sph.umich.edu/abecasis/Metal/download/Linux-metal.tar.gz
-tar -xvzf Linux-metal.tar.gz 
+tar -xvzf Linux-metal.tar.gz
 
 
 
@@ -26,10 +26,10 @@ sudo su - -c "R -e \"install.packages('dplyr', repos='http://cran.rstudio.com/')
 #sudo su - -c "R -e \"install.packages('tidyr', repos='http://cran.rstudio.com/')\""
 sudo su - -c "R -e \"install.packages('devtools', repos='http://cran.rstudio.com/')\""
 sudo su - -c "R -e \"install.packages('stringr', repos='http://cran.rstudio.com/')\""
+sudo su - -c "R -e \"install.packages('forestplot', repos='http://cran.rstudio.com/')\""
+
 
 sudo apt-get install libgmp-dev
 
 sudo su - -c "R -e \"devtools::install_github('MRCIEU/TwoSampleMR')\""
 sudo su - -c "R -e \"install.packages('MendelianRandomization', repos='http://cran.rstudio.com/')\""
-
-

@@ -19,6 +19,7 @@ trouble_new1 <- tryCatch({
         }, error = function(err) {
             # error handler picks up where error was generated
             print(paste("No more genes failed during clumping!:  ",err))
+            return(data.frame())
 
         })
 
@@ -37,6 +38,7 @@ trouble_new2 <- tryCatch({
         }, error = function(err) {
             # error handler picks up where error was generated
             print(paste("No more genes failed during ld matrix method!:  ",err))
+            return(data.frame())
         })
 
 trouble_new <- rbind(trouble_new1, trouble_new2)

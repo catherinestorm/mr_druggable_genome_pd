@@ -39,7 +39,7 @@ exp0 <- read_exposure_data(
 exp0$samplesize.exposure <- 1387
 
 
-# keep only a subset of genes 
+# keep only a subset of genes
 
 if (startsWith(OUTCOME, "replication_") == TRUE) {
     DISCOVERY_OUTCOME <- Sys.getenv("DISCOVERY_OUTCOME")
@@ -55,4 +55,3 @@ if (startsWith(OUTCOME, "replication_") == TRUE) {
 
 exp_to_keep <- unique(exp0$exposure)[START:END]
 exp <- subset(exp0, (exp0$exposure %in% exp_to_keep) & !(exp0$exposure %in% REMOVE1$exposure) & (exp0$exposure %in% TO_REPLICATE$exposure))
-

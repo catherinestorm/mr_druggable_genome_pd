@@ -28,11 +28,20 @@ psychencode$chr_pos <- str_c(psychencode$chr, ":",psychencode$position)
 
 
 
+
+
+# pqtl
+pqtl <- read.table("pqtl_data/complete_pqtl_data_for_druggable_genome_replication.txt", sep = "\t",colClasses = "character", header = T)
+
+pqtl$chr_pos <- str_c("chr", pqtl$chr, ":", pqtl$pos)
+names(pqtl)[1] <- "rsid_replication_pqtl"
+
 # join to add rsids to the gwas data
 nalls2014_1 <- left_join(nalls2014, eqtlgen[,c("chr_pos", "rsid_eqtlgen")], by = "chr_pos")
 nalls2014_2 <- left_join(nalls2014_1, psychencode[,c("chr_pos", "rsid_psychencode")], by = "chr_pos")
+nalls2014_3 <- left_join(nalls2014_2, pqtl[,c("chr_pos", "rsid_replication_pqtl")], by = "chr_pos")
 
 
-write.table(nalls2014_2,"outcome_data/nalls2014_discovery_risk.txt", sep = "\t", row.names = F, quote = F)
+write.table(nalls2014_3,"outcome_data/nalls2014_discovery_risk.txt", sep = "\t", row.names = F, quote = F)
 
 print("mission complete")
