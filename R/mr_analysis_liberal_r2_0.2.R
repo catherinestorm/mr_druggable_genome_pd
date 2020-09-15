@@ -17,6 +17,17 @@ dat0.2 <- clump_data(dat, clump_r2 = 0.2)
 
 #STEIGER TEST
 
+
+if (grepl("nalls2014", unique(dat0.2$outcome), fixed = TRUE) == TRUE) {
+  dat0.2$r.outcome <- get_r_from_lor(dat0.2$beta.outcome, af = dat0.2$eaf.outcome, ncase = 13708, ncontrol = 95282, prevalence = 0.01)
+} else if (grepl("nalls2019", unique(dat0.2$outcome), fixed = TRUE) == TRUE) {
+  dat0.2$r.outcome <- get_r_from_lor(dat0.2$beta.outcome, af = dat0.2$eaf.outcome, ncase = 8036, ncontrol = 5803, prevalence = 0.01)
+} else if (grepl("surv_", unique(dat0.2$outcome), fixed = TRUE) == TRUE) {
+  dat0.2$r.outcome <- get_r_from_lor(dat0.2$beta.outcome, af = dat0.2$eaf.outcome, ncase = 2047, ncontrol = 2046, prevalence = 0.01)
+}
+
+
+
 steiger_nalls0.2 <- directionality_test(dat0.2)
 
 steiger_nalls0.2_1 <- subset(steiger_nalls0.2, correct_causal_direction == TRUE)
