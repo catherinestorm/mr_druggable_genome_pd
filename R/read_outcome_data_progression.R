@@ -12,7 +12,6 @@ out <- read_outcome_data(snps = exp$SNP,
                          other_allele_col = "other_allele",
                          pval_col = "P",
                          samplesize_col = "N",
-                         phenotype_col = "outcome",
-                         eaf_col = "maf" # although this is not the effect allele frequency, this gives a better estimate of the r2 than the default
+                         phenotype_col = "outcome"
                          )
   
