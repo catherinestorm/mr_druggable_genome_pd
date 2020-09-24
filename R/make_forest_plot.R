@@ -23,7 +23,7 @@ format_numbers <- function(number) {
 
 
 significant_res <- as.data.frame(read_tsv("full_results/significant_genes_results_all_outcomes.txt"))
-
+significant_res <- unique(significant_res)
 
 
 # make forest plot RISK
@@ -79,24 +79,24 @@ dev.off()
 # make forest plot AGE AT ONSET
 
   temp <- significant_res[significant_res$outcome == "blauwendraat2019",]
-  
+
   data <- as.data.frame(subset(temp, temp$clump_tresh == "0.2"))
   data <- data[order(data$exposure),]
-  
+
   data <- data[which(data$method == "IVW" | data$method == "Inverse variance weighted" | data$method == "Wald ratio"),]
   data[which(data$tissue == "eqtlgen"), "tissue"] <- "Blood"
   data[which(data$tissue == "psychencode"), "tissue"] <- "Brain"
   data$beta_ci <- str_c(signif(data$beta, digits = 3), " (", signif(data$beta_lci, digits = 3), ", ",signif(data$beta_uci95, digits = 3), ")")
   data$roundp <- lapply(X = data$fdr_qval, FUN = format_numbers)
-  
+
   forest_data <- data[,c("beta", "beta_lci95", "beta_uci95", "tissue")]
   forest_data <- forest_data[complete.cases(forest_data),]
   forest_data <- rbind(c(NA, NA, NA, NA),forest_data)
-  
+
   table_text <- data[, c("exposure","nsnp", "beta_ci", "roundp")]
   #table_text <- table_text[complete.cases(table_text),]
   table_text <- rbind(c("Gene", "No. SNPs", "Beta (95% CI)", "Adjusted P"), table_text)
- 
+
   pdf("figures/forest_aao.pdf", width = 30,height = 10, onefile=FALSE)
     forestplot(table_text, # columns to include
                graph.pos = 3, # where graph is
@@ -115,7 +115,7 @@ dev.off()
                                 xlab  = gpar(fontface="bold", cex = 3)),
                fn.ci_sum=function(col, size, ...) {fpDrawNormalCI(clr.line = col, clr.marker = col, size=.2, ...)}
     )
-    dev.off() 
+    dev.off()
 
 
 
@@ -165,7 +165,7 @@ forestplot(table_text, # columns to include
                             xlab  = gpar(fontface="bold", cex = 4)),
            fn.ci_sum=function(col, size, ...) {fpDrawNormalCI(clr.line = col, clr.marker = col, size=.2, ...)}
 )
-dev.off() 
+dev.off()
 
 
 
@@ -227,7 +227,7 @@ forestplot(table_text, # columns to include
                             ticks = gpar(cex=4),
                             xlab  = gpar(fontface="bold", cex = 4))
 )
-dev.off() 
+dev.off()
 
 
 
@@ -284,5 +284,4 @@ forestplot(table_text, # columns to include
                             ticks = gpar(cex=4),
                             xlab  = gpar(fontface="bold", cex = 4))
 )
-dev.off() 
-
+dev.off()
