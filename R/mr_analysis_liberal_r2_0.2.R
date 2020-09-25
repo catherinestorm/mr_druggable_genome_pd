@@ -117,6 +117,8 @@ names(corr_egger_intercept1) <- c("exposure", "outcome", "nsnp", "intercept", "l
 corr_egger_intercept1[,3:9] <- sapply(corr_egger_intercept1[,3:9], function(x){as.numeric(as.character(x))})
 
 cochrans_q <- corr_egger_intercept1
+
+cochrans_q$nsnp <- as.numeric(as.character(cochrans_q$nsnp))
 cochrans_q$q_df <- cochrans_q$nsnp -1
 
 cochrans_q[which(cochrans_q$Q >= cochrans_q$q_df), "i2"] <- (cochrans_q[which(cochrans_q$Q >= cochrans_q$q_df), "Q"] - cochrans_q[which(cochrans_q$Q >= cochrans_q$q_df), "q_df"]) / cochrans_q[which(cochrans_q$Q >= cochrans_q$q_df), "Q"]
