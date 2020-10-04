@@ -7,18 +7,16 @@ library(forestplot)
 library(stringr)
 library(tidyverse)
 
-
 format_numbers <- function(number) {
   if (is.numeric(number) == FALSE & is.integer(number) == FALSE) {
     result <- NA
   } else if (number < 0.001) {
     result <- formatC(number, format = "e", digits = 2)
   } else if (number >= 0.001) {
-    result <- signif(number, digits = 3)
+    result <- format(round(number, 3), nsmall = 3)
   }
   return(result)
 }
-
 
 
 
@@ -34,13 +32,13 @@ replication$exposure_tissue <- str_c(replication$exposure, "_", replication$tiss
 discovery <- subset(discovery, discovery$exposure_tissue %in% replication$exposure_tissue)
 
 
-data <- as.data.frame(subset(discovery, discovery$clump_tresh == "0.2"))
+data <- as.data.frame(subset(discovery, discovery$clump_thresh == "0.2"))
 data <- data[order(data$exposure),]
 
 data <- data[which(data$method == "IVW" | data$method == "Inverse variance weighted" | data$method == "Wald ratio"),]
 data[which(data$tissue == "eqtlgen"), "tissue"] <- "Blood"
 data[which(data$tissue == "psychencode"), "tissue"] <- "Brain"
-data$or_ci <- str_c(round(data$or, digits = 2), " (", round(data$or_lci95, digits = 2), ", ",round(data$or_uci95, digits = 2), ")")
+data$or_ci <- str_c(format_numbers(data$or), " (", format_numbers(data$or_lci95), ", ",format_numbers(data$or_uci95), ")")
 data$roundp <- lapply(X = data$fdr_qval, FUN = format_numbers)
 
 forest_data <- data[,c("or", "or_lci95", "or_uci95", "tissue")]
@@ -52,7 +50,7 @@ table_text <- data[, c("exposure","nsnp", "or_ci", "roundp")]
 table_text <- rbind(c("Gene", "No. SNPs", "OR (95% CI)", "Adjusted P"), table_text)
 
 
-pdf("figures/forest_risk_risk.pdf", width = 30,height = 30, onefile=FALSE)
+pdf("figures/forest_risk.pdf", width = 30,height = 30, onefile=FALSE)
 forestplot(table_text, # columns to include
            graph.pos = 3, # where graph is
            boxsize = .2,
@@ -65,10 +63,12 @@ forestplot(table_text, # columns to include
            col=fpColors(box="royalblue", line = "royalblue", summary = "darkred"), # colours
            xlab="PD odds ratio",
            hrzl_lines = list("2" = gpar(lty = 2)),
-           txt_gp = fpTxtGp(summary = list(gpar(cex=3, fontface = "plain")),
-                            label = gpar(cex=3),
-                            ticks = gpar(cex=3),
-                            xlab  = gpar(fontface="bold", cex = 3)),
+           txt_gp = fpTxtGp(summary = (lapply(c(3,1,1,1),
+                                                  function(val)  gpar(fontface = val, cex = 3))),
+                                 label = (lapply(c(3,1,1,1),
+                                                 function(val)  gpar(fontface = val, cex = 3))),
+                                 ticks = gpar(cex=3, fontface = "plain"),
+                                 xlab  = gpar(fontface="bold", cex = 3)),
            fn.ci_sum=function(col, size, ...) {fpDrawNormalCI(clr.line = col, clr.marker = col, size=.2, ...)}
 )
 dev.off()
@@ -80,13 +80,13 @@ dev.off()
 
   temp <- significant_res[significant_res$outcome == "blauwendraat2019",]
 
-  data <- as.data.frame(subset(temp, temp$clump_tresh == "0.2"))
+  data <- as.data.frame(subset(temp, temp$clump_thresh == "0.2"))
   data <- data[order(data$exposure),]
 
   data <- data[which(data$method == "IVW" | data$method == "Inverse variance weighted" | data$method == "Wald ratio"),]
   data[which(data$tissue == "eqtlgen"), "tissue"] <- "Blood"
   data[which(data$tissue == "psychencode"), "tissue"] <- "Brain"
-  data$beta_ci <- str_c(signif(data$beta, digits = 3), " (", signif(data$beta_lci, digits = 3), ", ",signif(data$beta_uci95, digits = 3), ")")
+  data$beta_ci <- str_c(format_numbers(data$beta), " (", format_numbers(data$beta_lci), ", ",format_numbers(data$beta_uci95), ")")
   data$roundp <- lapply(X = data$fdr_qval, FUN = format_numbers)
 
   forest_data <- data[,c("beta", "beta_lci95", "beta_uci95", "tissue")]
@@ -109,10 +109,12 @@ dev.off()
                col=fpColors(box="royalblue", line = "royalblue", summary = "darkred"), # colours
                xlab="Beta for PD age at onset",
                hrzl_lines = list("2" = gpar(lty = 2)),
-               txt_gp = fpTxtGp(summary = list(gpar(cex=3, fontface = "plain")),
-                                label = gpar(cex=3),
-                                ticks = gpar(cex=3),
-                                xlab  = gpar(fontface="bold", cex = 3)),
+               txt_gp = fpTxtGp(summary = (lapply(c(3,1,1,1),
+                                                      function(val)  gpar(fontface = val, cex = 3))),
+                                     label = (lapply(c(3,1,1,1),
+                                                     function(val)  gpar(fontface = val, cex = 3))),
+                                     ticks = gpar(cex=3, fontface = "plain"),
+                                     xlab  = gpar(fontface="bold", cex = 3)),
                fn.ci_sum=function(col, size, ...) {fpDrawNormalCI(clr.line = col, clr.marker = col, size=.2, ...)}
     )
     dev.off()
@@ -124,14 +126,14 @@ dev.off()
 
 # make forest plot PROGRESSION
 data_forest_loop <-  significant_res[!grepl("nalls", significant_res$outcome) & !grepl("blauwendraat", significant_res$outcome),]
-data <- as.data.frame(subset(data_forest_loop, data_forest_loop$clump_tresh == "0.2"))
+data <- as.data.frame(subset(data_forest_loop, data_forest_loop$clump_thresh == "0.2"))
 #data[data$outcome == "blauwendraat2019","outcome"] <- "Age at onset"
 data <- data[order(data$outcome, data$exposure),]
 
 data <- data[which(data$method == "IVW" | data$method == "Inverse variance weighted" | data$method == "Wald ratio"),]
 data[which(data$tissue == "eqtlgen"), "tissue"] <- "Blood"
 data[which(data$tissue == "psychencode"), "tissue"] <- "Brain"
-data$beta_ci <- str_c(signif(data$beta, digits = 3), " (", signif(data$beta_lci, digits = 3), ", ",signif(data$beta_uci95, digits = 3), ")")
+data$beta_ci <- str_c(format_numbers(data$beta), " (", format_numbers(data$beta_lci), ", ",format_numbers(data$beta_uci95), ")")
 data$roundp <- lapply(X = data$fdr_qval, FUN = format_numbers)
 data <- data[order(data$exposure),]
 
@@ -159,10 +161,12 @@ forestplot(table_text, # columns to include
            col=fpColors(box="royalblue", line = "royalblue", summary = "darkred"), # colours
            xlab="Beta",
            hrzl_lines = list("2" = gpar(lty = 2)),
-           txt_gp = fpTxtGp(summary = list(gpar(cex=4, fontface = "plain")),
-                            label = gpar(cex=4),
-                            ticks = gpar(cex=4),
-                            xlab  = gpar(fontface="bold", cex = 4)),
+           txt_gp = fpTxtGp(summary = (lapply(c(3,1,1,1,1),
+                                                  function(val)  gpar(fontface = val, cex = 3))),
+                                 label = (lapply(c(3,1,1,1,1),
+                                                 function(val)  gpar(fontface = val, cex = 3))),
+                                 ticks = gpar(cex=3, fontface = "plain"),
+                                 xlab  = gpar(fontface="bold", cex = 3)),
            fn.ci_sum=function(col, size, ...) {fpDrawNormalCI(clr.line = col, clr.marker = col, size=.2, ...)}
 )
 dev.off()
@@ -195,8 +199,8 @@ data$pqtl_study[which(data$pqtl_study0 == "suhre2017")] <- "Suhre et al. 2017"
 
 data$gene <- gsub("\\_.*", "", data$exposure)
 
-data$beta_ci <- str_c(signif(data$beta, digits = 3), " (", signif(data$lo_ci, digits = 3), ", ",signif(data$up_ci, digits = 3), ")")
-data$or_ci <- str_c(signif(data$or, digits = 3), " (", signif(data$or_lci95, digits = 3), ", ",signif(data$or_uci95, digits = 3), ")")
+data$beta_ci <- str_c(format_numbers(data$beta), " (", format_numbers(data$lo_ci), ", ",format_numbers(data$up_ci), ")")
+data$or_ci <- str_c(format_numbers(data$or), " (", format_numbers(data$or_lci95), ", ",format_numbers(data$or_uci95), ")")
 
 data$roundp <- lapply(X = data$p, FUN = format_numbers)
 data <- data[order(data$exposure),]
@@ -223,9 +227,12 @@ forestplot(table_text, # columns to include
            col=fpColors(box="darkred", line = "darkred"), # colours
            xlab="PD odds ratio",
            hrzl_lines = list("2" = gpar(lty = 2)),
-           txt_gp = fpTxtGp(label = gpar(cex=4),
-                            ticks = gpar(cex=4),
-                            xlab  = gpar(fontface="bold", cex = 4))
+           txt_gp = fpTxtGp(summary = (lapply(c(3,1,1,1,1),
+                                                  function(val)  gpar(fontface = val, cex = 3))),
+                                 label = (lapply(c(3,1,1,1,1),
+                                                 function(val)  gpar(fontface = val, cex = 3))),
+                                 ticks = gpar(cex=3, fontface = "plain"),
+                                 xlab  = gpar(fontface="bold", cex = 3))
 )
 dev.off()
 
@@ -253,8 +260,8 @@ data$pqtl_study[which(data$pqtl_study0 == "suhre2017")] <- "Suhre et al. 2017"
 
 data$gene <- gsub("\\_.*", "", data$exposure)
 
-data$beta_ci <- str_c(signif(data$beta, digits = 3), " (", signif(data$lo_ci, digits = 3), ", ",signif(data$up_ci, digits = 3), ")")
-data$or_ci <- str_c(signif(data$or, digits = 3), " (", signif(data$or_lci95, digits = 3), ", ",signif(data$or_uci95, digits = 3), ")")
+data$beta_ci <- str_c(format_numbers(data$beta), " (", format_numbers(data$lo_ci), ", ",format_numbers(data$up_ci), ")")
+data$or_ci <- str_c(format_numbers(data$or), " (", format_numbers(data$or_lci95), ", ",format_numbers(data$or_uci95), ")")
 
 data$roundp <- lapply(X = data$p, FUN = format_numbers)
 data <- data[order(data$exposure),]
@@ -280,8 +287,11 @@ forestplot(table_text, # columns to include
            col=fpColors(box="darkred", line = "darkred"), # colours
            xlab="UPDRS part 4 score",
            hrzl_lines = list("2" = gpar(lty = 2)),
-           txt_gp = fpTxtGp(label = gpar(cex=4),
-                            ticks = gpar(cex=4),
-                            xlab  = gpar(fontface="bold", cex = 4))
+           txt_gp = fpTxtGp(summary = (lapply(c(3,1,1,1,1),
+                                                  function(val)  gpar(fontface = val, cex = 3))),
+                                 label = (lapply(c(3,1,1,1,1),
+                                                 function(val)  gpar(fontface = val, cex = 3))),
+                                 ticks = gpar(cex=3, fontface = "plain"),
+                                 xlab  = gpar(fontface="bold", cex = 3))
 )
 dev.off()

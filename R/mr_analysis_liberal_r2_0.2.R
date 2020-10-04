@@ -34,30 +34,38 @@ dat_steiger0.2 <- subset(dat0.2, dat0.2$exposure %in% steiger_nalls0.2_1$exposur
 
 write.table(dat_steiger0.2, str_c(EXPOSURE_DATA, "_",OUTCOME, "/data/", "dat_steiger_liberal_r2_0.2_",EXPOSURE_DATA, "_", OUTCOME, "_", START, ".txt"), col.names=T, row.names = F, sep = "\t")
 
+
+
 # MR analysis uncorrelated
-mr_mrbase0.2 <- mr(dat_steiger0.2)
-mr_mrbase0.2_keep <- subset(mr_mrbase0.2, mr_mrbase0.2$nsnp <= 2)
+two_snps_or_less <- as.data.frame(table(dat_steiger0.2$exposure))
+dat_steiger0.2_two_snps_or_less <- subset(dat_steiger0.2, dat_steiger0.2$exposure %in% two_snps_or_less$Var1[which(two_snps_or_less$Freq <=2)])
+mr_mrbase0.2 <- mr(dat_steiger0.2_two_snps_or_less)
 
-mr_mrbase0.2_keep <- mr_mrbase0.2_keep[,c("exposure", "outcome", "nsnp", "method", "b", "se", "pval")]
-names(mr_mrbase0.2_keep) <- c("exposure", "outcome", "nsnp", "method", "beta", "se", "p")
+if (plyr::empty(mr_mrbase0.2) == FALSE) {
+  mr_mrbase0.2_keep <- mr_mrbase0.2[,c("exposure", "outcome", "nsnp", "method", "b", "se", "pval")]
+  names(mr_mrbase0.2_keep) <- c("exposure", "outcome", "nsnp", "method", "beta", "se", "p")
+  mr_mrbase0.2_keep$clump_thresh <- "0.2"
 
-write.table(mr_mrbase0.2_keep, str_c(EXPOSURE_DATA, "_", OUTCOME, "/results/", "results_liberal_r2_0.2_", EXPOSURE_DATA, "_", OUTCOME, "_", START, ".txt"), sep = "\t", row.names = F)
+  all_res <- mr_mrbase0.2_keep
+
+  data_for_qval <- which(all_res$method == "IVW" | all_res$method == "Inverse variance weighted" | all_res$method == "Wald ratio")
+  all_res[data_for_qval, "fdr_qval"] <- p.adjust(all_res[data_for_qval, "p"], method = "fdr")
+
+  write.table(all_res, str_c(EXPOSURE_DATA, "_", OUTCOME, "/results/", "results_liberal_r2_0.2_", EXPOSURE_DATA, "_", OUTCOME, "_", START, ".txt"), sep = "\t", row.names = F)
+}
 
 
 
 
+# correlated ivw where > 2 SNPs available
 
-
-
-# correlated where > 2 SNPs available
-
-dat_steiger_keep <- subset(dat_steiger0.2, dat_steiger0.2$exposure %in% mr_mrbase0.2[which(mr_mrbase0.2$nsnp > 2), "exposure"])
+dat_steiger_keep <- subset(dat_steiger0.2, dat_steiger0.2$exposure %in% two_snps_or_less$Var1[which(two_snps_or_less$Freq > 2)])
 
 
 
 if (plyr::empty(dat_steiger_keep) == TRUE) {
 
-    print("no more genes in this script have > 2 snps available")
+    print("no genes in this script have > 2 snps available")
 
 } else {
 
@@ -105,6 +113,7 @@ corr_results1[,5:7] <- sapply(corr_results1[,5:7], function(x){as.numeric(as.cha
 
 # combine results
 corr_results2 <- corr_results1[,c("exposure", "outcome", "nsnp", "method", "beta", "se", "p")]
+corr_results2$clump_thresh <- "0.2"
 all_res <- distinct(rbind(mr_mrbase0.2_keep, corr_results2))
 
 write.table(all_res, str_c(EXPOSURE_DATA, "_", OUTCOME, "/results/", "results_liberal_r2_0.2_", EXPOSURE_DATA, "_", OUTCOME, "_", START, ".txt"), sep = "\t", row.names = F)
@@ -121,8 +130,9 @@ cochrans_q <- corr_egger_intercept1
 cochrans_q$nsnp <- as.numeric(as.character(cochrans_q$nsnp))
 cochrans_q$q_df <- cochrans_q$nsnp -1
 
-cochrans_q[which(cochrans_q$Q >= cochrans_q$q_df), "i2"] <- (cochrans_q[which(cochrans_q$Q >= cochrans_q$q_df), "Q"] - cochrans_q[which(cochrans_q$Q >= cochrans_q$q_df), "q_df"]) / cochrans_q[which(cochrans_q$Q >= cochrans_q$q_df), "Q"]
-cochrans_q[which(cochrans_q$Q < cochrans_q$q_df), "i2"] <- round(0, digits = 1)
+cochrans_q[which(cochrans_q$q >= cochrans_q$q_df), "i2"] <- (cochrans_q[which(cochrans_q$q >= cochrans_q$q_df), "q"] - cochrans_q[which(cochrans_q$q >= cochrans_q$q_df), "q_df"]) / cochrans_q[which(cochrans_q$q >= cochrans_q$q_df), "q"]
+cochrans_q[which(cochrans_q$q < cochrans_q$q_df), "i2"] <- round(0, digits = 1)
+
 cochrans_q$conf_int <- paste(round(cochrans_q$lower_ci, digits = 4), round(cochrans_q$upper_ci, digits = 4), sep = ", ")
 
 qc_write_out <- cochrans_q[,c("exposure", "outcome", "nsnp", "intercept", "conf_int", "pvalue", "q", "q_pval", "i2")]

@@ -49,7 +49,7 @@ if (startsWith(OUTCOME, "replication_") == TRUE) {
 
 } else if ((startsWith(EXPOSURE_DATA, "replication_") == TRUE)) {
 
-    exp_to_keep <- distinct(data.frame("exp_source" = exp0$exposure, "exp" = gsub("\\_.*","", exp0$exposure)))
+    exp_to_keep <- distinct(data.frame("exp_source" = exp0$exposure, "exp" = gsub("\\_.*","", exp0$exposure), stringsAsFactors = F))
 
     TO_REPLICATE <- read.table(str_c("full_results/significant_results_",OUTCOME,".txt"), sep = ",", header = T, colClasses = "character")
 
@@ -59,7 +59,7 @@ if (startsWith(OUTCOME, "replication_") == TRUE) {
 
     exp <- subset(exp0, (!(exp0$exposure %in% REMOVE1$exposure) & (exp0$exposure %in% exp_to_keep$exp_source)))
 
-
+    exp_to_keep <- exp_to_keep$exp_source
 
 } else if (is.na(END) == TRUE) {
 

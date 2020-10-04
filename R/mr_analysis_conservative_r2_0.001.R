@@ -7,8 +7,8 @@ if (plyr::empty(TO_REPLICATE) == TRUE) {
 liberal_full <- readr::read_tsv(str_c(EXPOSURE_DATA, "_", OUTCOME, "/results/", "full_results_liberal_r2_0.2_", EXPOSURE_DATA, "_", OUTCOME, ".txt"))
 liberal_sign <- readr::read_tsv(str_c(EXPOSURE_DATA, "_", OUTCOME, "/results/", "full_results_liberal_r2_0.2_", EXPOSURE_DATA, "_", OUTCOME, "_significant.txt"))
 
-liberal_full$clump_tresh <- "0.2"
-liberal_sign$clump_tresh <- "0.2"
+liberal_full$clump_thresh <- "0.2"
+liberal_sign$clump_thresh <- "0.2"
 
 liberal_full$tissue <- EXPOSURE_DATA
 liberal_sign$tissue <- EXPOSURE_DATA
@@ -73,10 +73,10 @@ mr_mrbase0.001 <- mr_mrbase0.001[,c("exposure", "outcome", "nsnp", "method", "b"
 names(mr_mrbase0.001) <- c("exposure", "outcome", "nsnp", "method", "beta", "se", "p")
 
 # multiple testing correction
+mr_mrbase0.001$clump_thresh <- "0.001"
 mr_mrbase0.001$fdr_qval <- "NA"
 data_for_qval <- which(mr_mrbase0.001$method == "IVW" | mr_mrbase0.001$method == "Inverse variance weighted" | mr_mrbase0.001$method == "Wald ratio")
 mr_mrbase0.001[data_for_qval, "fdr_qval"] <- p.adjust(mr_mrbase0.001[data_for_qval,"p"], method = "fdr")
-mr_mrbase0.001$clump_tresh <- "0.001"
 
 
 write.table(mr_mrbase0.001, str_c(EXPOSURE_DATA, "_",OUTCOME, "/results/", "full_results_conservative_r2_0.001_",EXPOSURE_DATA, "_", OUTCOME, ".txt"), col.names=T, row.names = F, sep = "\t")
@@ -85,14 +85,14 @@ write.table(mr_mrbase0.001, str_c(EXPOSURE_DATA, "_",OUTCOME, "/results/", "full
 # combine with other data
 liberal_full <- readr::read_tsv(str_c(EXPOSURE_DATA, "_", OUTCOME, "/results/", "full_results_liberal_r2_0.2_", EXPOSURE_DATA, "_", OUTCOME, ".txt"))
 
-liberal_full$clump_tresh <- "0.2"
+mr_mrbase0.001 <- mr_mrbase0.001[,names(liberal_full)]
 liberal_full <- distinct(rbind(mr_mrbase0.001,liberal_full))
 liberal_full$tissue <- EXPOSURE_DATA
 write.table(liberal_full, str_c(EXPOSURE_DATA, "_", OUTCOME, "/results/", "full_results_", EXPOSURE_DATA, "_", OUTCOME, ".txt"), sep = "\t", row.names = F)
 
 
 liberal_sign <- readr::read_tsv(str_c(EXPOSURE_DATA, "_", OUTCOME, "/results/", "full_results_liberal_r2_0.2_", EXPOSURE_DATA, "_", OUTCOME, "_significant.txt"))
-liberal_sign$clump_tresh <- "0.2"
+liberal_sign$clump_thresh <- "0.2"
 
 
 liberal_sign <- distinct(rbind(mr_mrbase0.001,liberal_sign))

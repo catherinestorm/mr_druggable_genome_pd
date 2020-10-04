@@ -15,14 +15,14 @@ DISCOVERY_OUTCOME <- Sys.getenv("DISCOVERY_OUTCOME")
 
 # read in discovery data
 significant_res_discovery <- read_csv(str_c("full_results/significant_results_",DISCOVERY_OUTCOME,".txt"), col_types = cols())
-significant_res_discovery1 <- significant_res_discovery[which((significant_res_discovery$method == "IVW" | significant_res_discovery$method == "Inverse variance weighted" | significant_res_discovery$method == "Wald ratio") & significant_res_discovery$clump_tresh == "0.2"),]
+significant_res_discovery1 <- significant_res_discovery[which((significant_res_discovery$method == "IVW" | significant_res_discovery$method == "Inverse variance weighted" | significant_res_discovery$method == "Wald ratio") & significant_res_discovery$clump_thresh == "0.2"),]
 discovery <- significant_res_discovery1[,c("exposure","tissue","beta")]
 names(discovery) <- c("exposure","tissue","discovery_beta")
 
 
 # read in replication data
 significant_res_replication <- read_csv(str_c("full_results/significant_results_",OUTCOME,".txt"), col_types = cols())
-significant_res_replication1 <- significant_res_replication[which((significant_res_replication$method == "IVW" | significant_res_replication$method == "Inverse variance weighted" | significant_res_replication$method == "Wald ratio") & significant_res_replication$clump_tresh == "0.2"),]
+significant_res_replication1 <- significant_res_replication[which((significant_res_replication$method == "IVW" | significant_res_replication$method == "Inverse variance weighted" | significant_res_replication$method == "Wald ratio") & significant_res_replication$clump_thresh == "0.2"),]
 replication <- significant_res_replication1[,c("exposure","tissue","beta")]
 names(replication) <- c("exposure","tissue","replication_beta")
 
