@@ -32,7 +32,8 @@ exp0 <- read_exposure_data(
   other_allele_col = "other_allele",
   pval_col = "pval",
   phenotype_col = "gene_and_source",
-  samplesize_col = "sample_size"
+  samplesize_col = "sample_size",
+  min_pval = 1e-400
 )
 
 ## keep only a subset of genes

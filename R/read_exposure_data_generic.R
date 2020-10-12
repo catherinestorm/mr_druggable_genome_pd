@@ -33,7 +33,8 @@ exp0 <- read_exposure_data(
   other_allele_col = "type in the name of the column that includes the other/reference allele",
   pval_col = "type in the name of the column that includes the pvalue",
   phenotype_col = "type in the name of the column that includes the name of the gene",
-  samplesize_col = "type in the name of the column that includes the number of samples used"
+  samplesize_col = "type in the name of the column that includes the number of samples used",
+  min_pval = 1e-400
 )
 
 

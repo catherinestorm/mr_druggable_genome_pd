@@ -6,7 +6,6 @@ suppressMessages(library(dplyr, warn.conflict = FALSE, quietly = TRUE))
 
 # find all Steiger-filtered MR input data generated
 dat_all0 <- list.files(pattern = "dat_steiger_liberal", recursive = T, full.names = T)
-dat_all <- dat_all0[!(grepl("1mb", dat_all0))]
 
 # populate a data frame
 dat_steiger_all <- data.frame()
