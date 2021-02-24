@@ -42,8 +42,23 @@ exp0$samplesize.exposure <- 1387
 # keep only a subset of genes
 
 if (startsWith(OUTCOME, "replication_") == TRUE) {
-    DISCOVERY_OUTCOME <- Sys.getenv("DISCOVERY_OUTCOME")
-    TO_REPLICATE <- read.table(str_c(EXPOSURE_DATA, "_", DISCOVERY_OUTCOME, "/results/full_results_liberal_r2_0.2_", EXPOSURE_DATA,"_", DISCOVERY_OUTCOME, "_significant.txt"), sep = "\t", header = T, colClasses = "character")
+    discovery_outcomes <- read.table("discovery_outcomes.txt")
+
+    TO_REPLICATE <- data.frame()
+    for (i in 1:nrow(discovery_outcomes)) {
+
+        DISCOVERY_OUTCOME <- discovery_outcomes[i,]
+
+        temp1 <- read.table(str_c("eqtlgen_", DISCOVERY_OUTCOME, "/results/full_results_liberal_r2_0.2_eqtlgen_", DISCOVERY_OUTCOME, "_significant.txt"), sep = "\t", header = T, colClasses = "character")
+
+        temp2 <- read.table(str_c("psychencode_", DISCOVERY_OUTCOME, "/results/full_results_liberal_r2_0.2_psychencode_", DISCOVERY_OUTCOME, "_significant.txt"), sep = "\t", header = T, colClasses = "character")
+
+        temp <- distinct(rbind(temp1, temp2))
+
+        TO_REPLICATE <- distinct(rbind(TO_REPLICATE, temp))
+
+    }
+
     END <- length(unique(exp0$exposure))
 } else if (is.na(END) == TRUE) {
     TO_REPLICATE <- exp0
@@ -51,6 +66,9 @@ if (startsWith(OUTCOME, "replication_") == TRUE) {
 } else {
     TO_REPLICATE <- exp0
 }
+
+
+
 
 
 exp_to_keep <- unique(exp0$exposure)[START:END]

@@ -67,7 +67,7 @@ replication_aao" > outcomes.txt
 
 echo "replication_pqtl" > outcomes.txt
 
-echo "pd_risk_discovery" > discovery_outcome.txt
+echo "pd_risk_discovery" > discovery_outcomes.txt
 ```
 
 
@@ -79,21 +79,20 @@ bash ./mr_druggable_genome_pd/shell/data_prep.sh
 
 5. Generate scripts that can be run in parallel
 ```bash
-while read DISCOVERY_OUTCOME; do
-    while read EXPOSURE_DATA; do
-        while read OUTCOME; do
+
+while read EXPOSURE_DATA; do
+    while read OUTCOME; do
 
             export EXPOSURE_DATA=${EXPOSURE_DATA}
             export OUTCOME=${OUTCOME}
-            export DISCOVERY_OUTCOME=${DISCOVERY_OUTCOME} # will be ignored if not a replication outcome
 
             mkdir ${EXPOSURE_DATA}_${OUTCOME}
 
             bash ./mr_druggable_genome_pd/shell/generate_parallel_scripts.sh
 
-        done < outcomes.txt
-    done < exposure_data.txt
-done < discovery_outcome.txt
+    done < outcomes.txt
+done < exposure_data.txt
+
 ```
 
 6. Run Mendelian randomization for the druggable genome using all the exposure data and outcome data you have specified.
