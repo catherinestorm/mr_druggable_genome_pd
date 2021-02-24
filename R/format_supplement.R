@@ -34,6 +34,12 @@ significant_res_with_druggability_info <- left_join(significant_res,
                                          by = c("exposure" = "gene_display_label"))
 
 
+significant_res_with_druggability_info$tissue <- gsub("psychencode", "brain_eqtl", significant_res_with_druggability_info$tissue)
+significant_res_with_druggability_info$tissue <- gsub("eqtlgen", "blood_eqtl", significant_res_with_druggability_info$tissue)
+significant_res_with_druggability_info$tissue <- gsub("replication_pqtl", "blood_pqtl", significant_res_with_druggability_info$tissue)
+
+names(significant_res_with_druggability_info)[names(significant_res_with_druggability_info) == "tissue"] <- "tissue_qtl_type"
+
 write.table(significant_res_with_druggability_info, "full_results/significant_genes_results_all_outcomes.txt", row.names = F, sep = "\t")
 
 
@@ -45,6 +51,12 @@ for (i in 1:length(significant_qc_files)) {
   temp <- read_csv(significant_qc_files[i], col_types = cols())
   significant_qc <- distinct(rbind(significant_qc,temp))
 }
+
+significant_qc$tissue <- gsub("psychencode", "brain_eqtl", significant_qc$tissue)
+significant_qc$tissue <- gsub("eqtlgen", "blood_eqtl", significant_qc$tissue)
+significant_qc$tissue <- gsub("replication_pqtl", "blood_pqtl", significant_qc$tissue)
+
+names(significant_qc)[names(significant_qc) == "tissue"] <- "tissue_qtl_type"
 
 write.table(significant_qc, "full_results/significant_genes_qc_all_outcomes.txt", row.names = F, sep = "\t")
 
@@ -74,6 +86,11 @@ for (i in 1:length(full_res_files)) {
 
 full_res <- subset(full_res, !(full_res$p == 0))
 
+full_res$tissue <- gsub("psychencode", "brain_eqtl", full_res$tissue)
+full_res$tissue <- gsub("eqtlgen", "blood_eqtl", full_res$tissue)
+full_res$tissue <- gsub("replication_pqtl", "blood_pqtl", full_res$tissue)
+
+names(full_res)[names(full_res) == "tissue"] <- "tissue_qtl_type"
 
 write.table(full_res, "full_results/all_genes_results_all_outcomes.txt", row.names = F, sep = "\t")
 
@@ -86,6 +103,14 @@ for (i in 1:length(full_qc_files)) {
   temp <- read_csv(full_qc_files[i], col_types = cols())
   full_qc <- distinct(rbind(full_qc,temp))
 }
+
+
+full_qc$tissue <- gsub("psychencode", "brain_eqtl", full_qc$tissue)
+full_qc$tissue <- gsub("eqtlgen", "blood_eqtl", full_qc$tissue)
+full_qc$tissue <- gsub("replication_pqtl", "blood_pqtl", full_qc$tissue)
+
+names(full_qc)[names(full_qc) == "tissue"] <- "tissue_qtl_type"
+
 
 write.table(full_qc, "full_results/all_genes_qc_all_outcomes.txt", row.names = F, sep = "\t")
 

@@ -44,30 +44,30 @@ eqtlgen" > exposure_data.txt
 
 For discovery analyses, specify your outcomes. Example below.
 ```bash
-echo "nalls2014
-cont_HY
-cont_MMSE
-cont_MOCA
-cont_SEADL
-cont_UPDRS1_scaled
-cont_UPDRS2_scaled
-cont_UPDRS3_scaled
-cont_UPDRS4_scaled
-cont_UPDRS_scaled
-surv_DEMENTIA
-surv_DEPR
-surv_DYSKINESIAS" > outcomes.txt
+echo "pd_risk_discovery
+pd_progression_cont_HY
+pd_progression_cont_MMSE
+pd_progression_cont_MOCA
+pd_progression_cont_SEADL
+pd_progression_cont_UPDRS1_scaled
+pd_progression_cont_UPDRS2_scaled
+pd_progression_cont_UPDRS3_scaled
+pd_progression_cont_UPDRS4_scaled
+pd_progression_cont_UPDRS_scaled
+pd_progression_surv_DEMENTIA
+pd_progression_surv_DEPR
+pd_progression_surv_DYSKINESIAS" > outcomes.txt
 ```
 
 
-For replication analyses, the outcome should begin with "replication_", and you need to specify your discovery outcome. This will make sure your pvalue threshold for significance is the non-adjusted pvalue, and that you only run the replication step for discovered genes. Example below.
+For replication analyses, the outcome should begin with "replication_", and you need to specify your discovery outcome. This will make sure your pvalue threshold for significance is the non-adjusted pvalue, and that you only run the replication step for discovered genes. Examples below.
 ```bash
 echo "replication_risk
 replication_aao" > outcomes.txt
 
 echo "replication_pqtl" > outcomes.txt
 
-export DISCOVERY_OUTCOME="nalls2014"
+echo "pd_risk_discovery" > discovery_outcome.txt
 ```
 
 
@@ -79,16 +79,21 @@ bash ./mr_druggable_genome_pd/shell/data_prep.sh
 
 5. Generate scripts that can be run in parallel
 ```bash
-while read EXPOSURE_DATA; do
-    while read OUTCOME; do
-        export EXPOSURE_DATA=${EXPOSURE_DATA}
-        export OUTCOME=${OUTCOME}
-        export DISCOVERY_OUTCOME=${DISCOVERY_OUTCOME} # will be ignored if not a replication outcome
-        mkdir ${EXPOSURE_DATA}_${OUTCOME}
+while read DISCOVERY_OUTCOME; do
+    while read EXPOSURE_DATA; do
+        while read OUTCOME; do
 
-        bash ./mr_druggable_genome_pd/shell/generate_parallel_scripts.sh
-    done < outcomes.txt
-done < exposure_data.txt
+            export EXPOSURE_DATA=${EXPOSURE_DATA}
+            export OUTCOME=${OUTCOME}
+            export DISCOVERY_OUTCOME=${DISCOVERY_OUTCOME} # will be ignored if not a replication outcome
+
+            mkdir ${EXPOSURE_DATA}_${OUTCOME}
+
+            bash ./mr_druggable_genome_pd/shell/generate_parallel_scripts.sh
+
+        done < outcomes.txt
+    done < exposure_data.txt
+done < discovery_outcome.txt
 ```
 
 6. Run Mendelian randomization for the druggable genome using all the exposure data and outcome data you have specified.
@@ -165,4 +170,21 @@ done < outcomes.txt
 mkdir figures
 
 Rscript ./mr_druggable_genome_pd/R/make_forest_plots.R
+```
+
+14. Colocalization analysis.
+
+```bash
+mkdir coloc
+
+Rscript ./mr_druggable_genome_pd/R/data_prep_coloc.R
+
+while read EXPOSURE_DATA; do
+    while read OUTCOME; do
+        export EXPOSURE_DATA=${EXPOSURE_DATA}
+        export OUTCOME=${OUTCOME}
+        Rscript ./mr_druggable_genome_pd/R/script_coloc.R
+    done < outcomes.txt
+done < exposure_data.txt
+
 ```

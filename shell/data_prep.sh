@@ -13,15 +13,15 @@ wait
 
 
 ## process discovery-phase PD risk data for the discovery phase
-nohup Rscript ./mr_druggable_genome_pd/R/data_prep_nalls2014.R &> nohup_data_prep_nalls2014.log &
+nohup Rscript ./mr_druggable_genome_pd/R/data_prep_pd_risk_discovery.R &> nohup_data_prep_pd_risk_discovery.log &
 
 
 ## meta-analyse PD risk GWAS datasets for replication-phase PD risk
-./generic-metal/metal < ./mr_druggable_genome_pd/shell/meta_analysis_meta5_without_nalls2014.txt
+./generic-metal/metal < ./mr_druggable_genome_pd/shell/meta_analysis_meta5_without_pd_risk_discovery.txt
 
 wait
 
-nohup Rscript ./mr_druggable_genome_pd/R/meta_analysis_meta5_without_nalls2014_qc.R &> nohup_meta_analysis_meta5_without_nalls2014_qc.log &
+nohup Rscript ./mr_druggable_genome_pd/R/meta_analysis_meta5_without_pd_risk_discovery_qc.R &> nohup_meta_analysis_meta5_without_pd_risk_discovery_qc.log &
 
 
 ## process replication-phase PD risk & age at onset data
@@ -34,19 +34,19 @@ nohup Rscript ./mr_druggable_genome_pd/R/data_prep_iwaki2019.R &> nohup_data_pre
 wait
 
 
-echo "cont_HY
-cont_MMSE
-cont_MOCA
-cont_SEADL
-cont_UPDRS1_scaled
-cont_UPDRS2_scaled
-cont_UPDRS3_scaled
-cont_UPDRS4_scaled
-cont_UPDRS_scaled
-surv_DEMENTIA
-surv_DEPR
-surv_DYSKINESIAS
-surv_HY3" > progression_outcomes.txt
+echo "pd_progression_cont_HY
+pd_progression_cont_MMSE
+pd_progression_cont_MOCA
+pd_progression_cont_SEADL
+pd_progression_cont_UPDRS1_scaled
+pd_progression_cont_UPDRS2_scaled
+pd_progression_cont_UPDRS3_scaled
+pd_progression_cont_UPDRS4_scaled
+pd_progression_cont_UPDRS_scaled
+pd_progression_surv_DEMENTIA
+pd_progression_surv_DEPR
+pd_progression_surv_DYSKINESIAS
+pd_progression_surv_HY3" > progression_outcomes.txt
 
 
 ## generate read_outcome_data scripts for progression

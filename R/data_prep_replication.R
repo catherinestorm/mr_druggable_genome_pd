@@ -38,7 +38,7 @@ replication_data_risk$se <- 1 / sqrt(2 * replication_data_risk$Freq1 * (1- repli
 replication_data_risk <- left_join(replication_data_risk, eqtlgen[,c("chr_pos", "rsid_eqtlgen")], by = c("MarkerName" = "chr_pos"))
 replication_data_risk <- left_join(replication_data_risk, psychencode[,c("chr_pos", "rsid_psychencode")], by = c("MarkerName" = "chr_pos"))
 
-write.table(replication_data_risk, "outcome_data/nalls2019_replication_risk.txt", sep = "\t", row.names = F, quote = F)
+write.table(replication_data_risk, "outcome_data/pd_replication_replication_risk.txt", sep = "\t", row.names = F, quote = F)
 
 
 
@@ -49,7 +49,7 @@ replication_data_aao <- left_join(replication_data_aao, eqtlgen[,c("chr_pos", "r
 replication_data_aao <- left_join(replication_data_aao, psychencode[,c("chr_pos", "rsid_psychencode")], by = c("MarkerName" = "chr_pos"))
 
 
-write.table(replication_data_aao, "outcome_data/blauwendraat2019_replication_aao.txt", sep = "\t", row.names = F, quote = F)
+write.table(replication_data_aao, "outcome_data/pd_age_at_onset_replication_aao.txt", sep = "\t", row.names = F, quote = F)
 
 
 

@@ -18,9 +18,9 @@ dat0.2 <- clump_data(dat, clump_r2 = 0.2)
 #STEIGER TEST
 
 
-if (grepl("nalls2014", unique(dat0.2$outcome), fixed = TRUE) == TRUE) {
+if (grepl("pd_risk_discovery", unique(dat0.2$outcome), fixed = TRUE) == TRUE) {
   dat0.2$r.outcome <- get_r_from_lor(dat0.2$beta.outcome, af = dat0.2$eaf.outcome, ncase = 13708, ncontrol = 95282, prevalence = 0.01)
-} else if (grepl("nalls2019", unique(dat0.2$outcome), fixed = TRUE) == TRUE) {
+} else if (grepl("pd_replication", unique(dat0.2$outcome), fixed = TRUE) == TRUE) {
   dat0.2$r.outcome <- get_r_from_lor(dat0.2$beta.outcome, af = dat0.2$eaf.outcome, ncase = 8036, ncontrol = 5803, prevalence = 0.01)
 }
 
@@ -31,6 +31,8 @@ steiger_nalls0.2 <- directionality_test(dat0.2)
 steiger_nalls0.2_1 <- subset(steiger_nalls0.2, correct_causal_direction == TRUE)
 
 dat_steiger0.2 <- subset(dat0.2, dat0.2$exposure %in% steiger_nalls0.2_1$exposure)
+
+write.table(steiger_nalls0.2, str_c(EXPOSURE_DATA, "_",OUTCOME, "/data/", "steiger_stats_liberal_r2_0.2_",EXPOSURE_DATA, "_", OUTCOME, "_", START, ".txt"), col.names=T, row.names = F, sep = "\t")
 
 write.table(dat_steiger0.2, str_c(EXPOSURE_DATA, "_",OUTCOME, "/data/", "dat_steiger_liberal_r2_0.2_",EXPOSURE_DATA, "_", OUTCOME, "_", START, ".txt"), col.names=T, row.names = F, sep = "\t")
 

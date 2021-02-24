@@ -33,10 +33,10 @@ significant_res <- unique(significant_res)
 
 
 # make forest plot RISK
-discovery <- significant_res[significant_res$outcome == "nalls2014",]
+discovery <- significant_res[significant_res$outcome == "pd_risk_discovery",]
 discovery <- discovery[!grepl("_",discovery$exposure),]
 discovery$exposure_tissue <- str_c(discovery$exposure, "_", discovery$tissue)
-replication <- significant_res[significant_res$outcome == "nalls2019",]
+replication <- significant_res[significant_res$outcome == "pd_replication",]
 replication$exposure_tissue <- str_c(replication$exposure, "_", replication$tissue)
 discovery <- subset(discovery, discovery$exposure_tissue %in% replication$exposure_tissue)
 
@@ -87,7 +87,7 @@ dev.off()
 
 # make forest plot AGE AT ONSET
 
-temp <- significant_res[significant_res$outcome == "blauwendraat2019",]
+temp <- significant_res[significant_res$outcome == "pd_age_at_onset",]
 
 data <- as.data.frame(subset(temp, temp$clump_thresh == "0.2"))
 data <- data[order(data$exposure),]
@@ -137,7 +137,7 @@ dev.off()
 data_forest <-  significant_res[!grepl("nalls", significant_res$outcome) & !grepl("blauwendraat", significant_res$outcome),]
 data_forest <- data_forest[!grepl("_",data_forest$exposure),]
 data <- as.data.frame(subset(data_forest, data_forest$clump_thresh == "0.2"))
-#data[data$outcome == "blauwendraat2019","outcome"] <- "Age at onset"
+#data[data$outcome == "pd_age_at_onset","outcome"] <- "Age at onset"
 data <- data[order(data$outcome, data$exposure),]
 
 data <- data[which(data$method == "IVW" | data$method == "Inverse variance weighted" | data$method == "Wald ratio"),]
@@ -197,7 +197,7 @@ dev.off()
 # PQTL DATA
 
 ## risk
-data <- read.table("replication_pqtl_nalls2014/results/full_results_liberal_r2_0.2_replication_pqtl_nalls2014.txt", sep = "\t", header = T)
+data <- read.table("replication_pqtl_pd_risk_discovery/results/full_results_liberal_r2_0.2_replication_pqtl_pd_risk_discovery.txt", sep = "\t", header = T)
 
 data <- data[order(data$outcome, data$exposure),]
 data <- data[which(data$method == "IVW" | data$method == "Inverse variance weighted" | data$method == "Wald ratio"),]
@@ -259,7 +259,7 @@ dev.off()
 
 ## updrs part 4
 
-data <- read.table("replication_pqtl_cont_UPDRS4_scaled/results/full_results_liberal_r2_0.2_replication_pqtl_cont_UPDRS4_scaled.txt", sep = "\t", header = T)
+data <- read.table("replication_pqtl_pd_progression_cont_UPDRS4_scaled/results/full_results_liberal_r2_0.2_replication_pqtl_pd_progression_cont_UPDRS4_scaled.txt", sep = "\t", header = T)
 
 
 data <- data[order(data$outcome, data$exposure),]

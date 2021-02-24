@@ -46,7 +46,7 @@ for (i in 1:length(file_list_res)) {
 
   raw_data$outcome <- file_list_res[i]
   raw_data$outcome <- gsub(".txt.gz", "", raw_data$outcome)
-  raw_data$outcome <- gsub("outcome_data/", "", raw_data$outcome)
+  raw_data$outcome <- gsub("outcome_data/", "pd_progression_", raw_data$outcome)
 
   raw_data_with_alleles <- left_join(raw_data, alleles[, c("chrpos", "rsid", "other_allele", "effect_allele", "maf")], by = c("SNP" = "chrpos"))
 

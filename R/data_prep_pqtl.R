@@ -7,7 +7,7 @@ library(stringr)
 # genes to replicate
 druggable_genome <- read.csv("druggable_genome_new.txt", sep = "\t", header = T, stringsAsFactors = F)
 sign <- as.data.frame(read_tsv("full_results/significant_genes_results_all_outcomes.txt"))
-sign <- subset(sign, sign$outcome != "nalls2014")
+sign <- subset(sign, sign$outcome != "pd_risk_discovery")
 
 #druggable_genome_sign <- druggable_genome
 druggable_genome_sign <- subset(druggable_genome, druggable_genome$gene_display_label %in% sign$exposure)

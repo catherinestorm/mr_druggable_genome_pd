@@ -1,7 +1,7 @@
 ### load outcome data
 
 out <- read_outcome_data(snps = exp$SNP,
-                                     filename = "outcome_data/nalls2019_replication_risk.txt",
+                                     filename = "outcome_data/pd_replication_replication_risk.txt",
                                      sep = "\t",
                                      snp_col = str_c("rsid_", EXPOSURE_DATA),
                                      beta_col = "beta",
@@ -11,7 +11,7 @@ out <- read_outcome_data(snps = exp$SNP,
                                      eaf_col = "Freq1",
                                      pval_col = "P-value",
                                      samplesize_col = "Weight")
-  
-out$outcome <- "nalls2019"
+
+out$outcome <- "pd_risk_replication"
 
 #out$samplesize.outcome <- 13839
