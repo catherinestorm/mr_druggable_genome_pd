@@ -40,9 +40,21 @@ exp0 <- read_exposure_data(
 
 ## keep only a subset of genes
 
+
 if (startsWith(OUTCOME, "replication_") == TRUE) {
-    DISCOVERY_OUTCOME <- Sys.getenv("DISCOVERY_OUTCOME")
-    TO_REPLICATE <- read.table(str_c(EXPOSURE_DATA, "_", DISCOVERY_OUTCOME, "/results/full_results_liberal_r2_0.2_", EXPOSURE_DATA,"_", DISCOVERY_OUTCOME, "_significant.txt"), sep = "\t", header = T, colClasses = "character")
+    discovery_outcomes <- read.table("discovery_outcomes.txt")
+
+    TO_REPLICATE <- data.frame()
+    for (i in 1:nrow(discovery_outcomes)) {
+
+        DISCOVERY_OUTCOME <- discovery_outcomes[i,]
+
+        temp <- read.table(str_c(EXPOSURE_DATA, "_", DISCOVERY_OUTCOME, "/results/full_results_liberal_r2_0.2_", EXPOSURE_DATA,"_", DISCOVERY_OUTCOME, "_significant.txt"), sep = "\t", header = T, colClasses = "character")
+
+        TO_REPLICATE <- distinct(rbind(TO_REPLICATE, temp))
+
+    }
+
     END <- length(unique(exp0$exposure))
 } else if (is.na(END) == TRUE) {
     TO_REPLICATE <- exp0

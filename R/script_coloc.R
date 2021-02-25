@@ -2,9 +2,9 @@
 library("coloc")
 library("stringr")
 
-GENE <- Sys.Getenv("GENE")
-EXPOSURE_DATA <- Sys.Getenv("EXPOSURE_DATA")
-OUTCOME <- Sys.Getenv("OUTCOME")
+#GENE <- Sys.Getenv("GENE")
+#EXPOSURE_DATA <- Sys.Getenv("EXPOSURE_DATA")
+#OUTCOME <- Sys.Getenv("OUTCOME")
 
 
 # set priors
@@ -136,7 +136,11 @@ for (i in 1:length(dat_harmonized4coloc_files)){
     }
 }
 
+# keep only powered analyses
+coloc_results_gene_summary$sum_pph3_pph4 <- as.numeric(coloc_results_gene_summary$PP.H3.abf) + as.numeric(coloc_results_gene_summary$PP.H4.abf)
 
-write.table(coloc_results_gene_summary, str_c("coloc/res_coloc_all_outcomes_p1_",p1,"_p2_",p2,"_p12_",p12, ".txt"),sep="\t",quote=F,row.names=F)
+coloc_results_gene_summary_powered <- coloc_results_gene_summary[which(coloc_results_gene_summary$sum_pph3_pph4 > 0.8),]
+
+write.table(coloc_results_gene_summary_powered, str_c("coloc/res_coloc_all_outcomes_p1_",p1,"_p2_",p2,"_p12_",p12, ".txt"),sep="\t",quote=F,row.names=F)
 
 print("mission_complete")

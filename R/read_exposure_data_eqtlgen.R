@@ -45,11 +45,7 @@ if (startsWith(OUTCOME, "replication_") == TRUE) {
 
         DISCOVERY_OUTCOME <- discovery_outcomes[i,]
 
-        temp1 <- read.table(str_c("eqtlgen_", DISCOVERY_OUTCOME, "/results/full_results_liberal_r2_0.2_eqtlgen_", DISCOVERY_OUTCOME, "_significant.txt"), sep = "\t", header = T, colClasses = "character")
-
-        temp2 <- read.table(str_c("psychencode_", DISCOVERY_OUTCOME, "/results/full_results_liberal_r2_0.2_psychencode_", DISCOVERY_OUTCOME, "_significant.txt"), sep = "\t", header = T, colClasses = "character")
-
-        temp <- distinct(rbind(temp1, temp2))
+        temp <- read.table(str_c(EXPOSURE_DATA, "_", DISCOVERY_OUTCOME, "/results/full_results_liberal_r2_0.2_", EXPOSURE_DATA,"_", DISCOVERY_OUTCOME, "_significant.txt"), sep = "\t", header = T, colClasses = "character")
 
         TO_REPLICATE <- distinct(rbind(TO_REPLICATE, temp))
 
