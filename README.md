@@ -182,7 +182,7 @@ while read EXPOSURE_DATA; do
     while read OUTCOME; do
         export EXPOSURE_DATA=${EXPOSURE_DATA}
         export OUTCOME=${OUTCOME}
-        Rscript ./mr_druggable_genome_pd/R/script_coloc.R
+        Rscript ./mr_druggable_genome_pd/R/run_coloc.R
     done < outcomes.txt
 done < exposure_data.txt
 
