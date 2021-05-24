@@ -28,6 +28,21 @@ psychencode$chr_pos <- str_c(psychencode$chr, ":",psychencode$position)
 
 
 
+metabrain_bg <- read_tsv("eqtl_data_metabrain/metabrain_basalganglia_eur_exposure_dat_snps_5kb_window_hg19.txt", col_types=cols(.default="c"))
+
+metabrain_bg$chr_pos <- str_c("chr", metabrain_bg$hg19_snp_chr,":",metabrain_bg$hg19_snp_pos,sep="")
+
+names(metabrain_bg)[names(metabrain_bg)=="rsid"] <- "rsid_metabrain_bg"
+
+
+
+metabrain_cortex <- read_tsv("eqtl_data_metabrain/metabrain_cortex_eur_exposure_dat_snps_5kb_window_hg19.txt", col_types=cols(.default="c"))
+
+metabrain_cortex$chr_pos <- str_c("chr", metabrain_cortex$hg19_snp_chr,":",metabrain_cortex$hg19_snp_pos,sep="")
+
+names(metabrain_cortex)[names(metabrain_cortex)=="rsid"] <- "rsid_metabrain_cortex"
+
+
 
 
 # pqtl
@@ -40,8 +55,10 @@ names(pqtl)[1] <- "rsid_replication_pqtl"
 pd_risk_discovery_1 <- left_join(pd_risk_discovery, eqtlgen[,c("chr_pos", "rsid_eqtlgen")], by = "chr_pos")
 pd_risk_discovery_2 <- left_join(pd_risk_discovery_1, psychencode[,c("chr_pos", "rsid_psychencode")], by = "chr_pos")
 pd_risk_discovery_3 <- left_join(pd_risk_discovery_2, pqtl[,c("chr_pos", "rsid_replication_pqtl")], by = "chr_pos")
+pd_risk_discovery_4 <- left_join(pd_risk_discovery_3, metabrain_bg[,c("chr_pos", "rsid_metabrain_bg")], by = "chr_pos")
+pd_risk_discovery_5 <- left_join(pd_risk_discovery_4, metabrain_cortex[,c("chr_pos", "rsid_metabrain_cortex")], by = "chr_pos")
 
 
-write.table(pd_risk_discovery_3,"outcome_data/pd_risk_discovery_discovery_risk.txt", sep = "\t", row.names = F, quote = F)
+write.table(pd_risk_discovery_5,"outcome_data/pd_discovery_risk.txt", sep = "\t", row.names = F, quote = F)
 
 print("mission complete")

@@ -50,7 +50,7 @@ genes_id01[,3:5] <- sapply(genes_id01[,3:5], as.numeric)
 
 # renames columns
 
-names(genes_id01)<-c("exposure","gene.exposure","chromosome_name","start_position","end_position") 
+names(genes_id01)<-c("exposure","gene.exposure","chromosome_name","start_position","end_position")
 
 
 
@@ -79,11 +79,11 @@ genes_data <- data.frame()
 # loop to keep snps within 5kb of gene start/end positions # from 343084 eQTLs for 3645 genes to 80069 eQTLs for 2449 genes
 
 for (i in 1:length(unique(genes_id$gene.exposure))) {
-  
+
   dat1 <- dat[which(dat$new_gene_id==genes_id$exposure[i] & dat$SNP_chr==genes_id$chromosome_name[i] & dat$SNP_start >= (genes_id$start_position[i]-5000) & dat$SNP_start <= (genes_id$end_position[i]+5000)),]
 
   genes_data <- rbind(genes_data,dat1)
-  
+
 }
 
 
@@ -114,4 +114,3 @@ write.table(full_with_names, "eqtl_data_psychencode/psychencode_exposure_dat_snp
 
 
 print("mission complete")
-

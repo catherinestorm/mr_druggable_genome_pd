@@ -12,6 +12,10 @@ done < exposure_data.txt
 wait
 
 
+# liftover metabrain data
+bash ./mr_druggable_genome_pd/shell/liftover_metabrain.sh
+
+
 ## process discovery-phase PD risk data for the discovery phase
 nohup Rscript ./mr_druggable_genome_pd/R/data_prep_pd_risk_discovery.R &> nohup_data_prep_pd_risk_discovery.log &
 

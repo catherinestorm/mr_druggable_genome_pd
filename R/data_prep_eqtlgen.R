@@ -49,7 +49,7 @@ genes_id01[,3:5] <- sapply(genes_id01[,3:5], as.numeric)
 
 # renames columns
 
-names(genes_id01)<-c("exposure","gene.exposure","chromosome_name","start_position","end_position") 
+names(genes_id01)<-c("exposure","gene.exposure","chromosome_name","start_position","end_position")
 
 
 
@@ -75,11 +75,11 @@ genes_data <- data.frame()
 # loop to keep snps within 5kb of gene start/end positions # from 1382626 eQTLs for 2918 genes to 280216 eQTLs for 2791 genes
 
 for (i in 1:length(unique(genes_id$gene.exposure))) {
-  
+
   dat1 <- dat[which(dat$new_gene_id==genes_id$exposure[i] & dat$SNPChr==genes_id$chromosome_name[i] & dat$SNPPos >= (genes_id$start_position[i]-5000) & dat$SNPPos <= (genes_id$end_position[i]+5000)),]
 
   genes_data <- rbind(genes_data,dat1)
-  
+
 }
 
 
@@ -104,12 +104,12 @@ full$eaf[mismatch] <- 1 - as.numeric(full$eaf[mismatch])
 
 # calculate beta and standard error
 
-full$beta <- as.numeric(full$Zscore) / sqrt(2 * as.numeric(full$eaf) * 
-                                                      (1- as.numeric(full$eaf)) * 
+full$beta <- as.numeric(full$Zscore) / sqrt(2 * as.numeric(full$eaf) *
+                                                      (1- as.numeric(full$eaf)) *
                                                       (as.numeric(full$NrSamples) + as.numeric(full$Zscore)^2))
 
-full$se = 1 / sqrt(2 * as.numeric(full$eaf) * 
-                         (1- as.numeric(full$eaf)) * 
+full$se = 1 / sqrt(2 * as.numeric(full$eaf) *
+                         (1- as.numeric(full$eaf)) *
                          (as.numeric(full$NrSamples) + as.numeric(full$Zscore)^2))
 
 

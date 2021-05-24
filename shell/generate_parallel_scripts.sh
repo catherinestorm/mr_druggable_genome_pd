@@ -81,4 +81,34 @@ else
 
                 done
             fi
+
+            if [[ $EXPOSURE_DATA == metabrain_bg* ]]; then
+            for ((k=1; k <= 107;k+=50))
+                do
+
+                echo "export START=${k}
+                export END=$((${k}+50))
+
+                export EXPOSURE_DATA=${EXPOSURE_DATA}
+                export OUTCOME=${OUTCOME}
+
+                Rscript ${EXPOSURE_DATA}_${OUTCOME}/script_liberal_r2_0.2_${EXPOSURE_DATA}_${OUTCOME}.R" > ${EXPOSURE_DATA}_${OUTCOME}/${EXPOSURE_DATA}_parallel_scripts/script_liberal_r2_0.2_${EXPOSURE_DATA}_${OUTCOME}_${k}.sh
+
+                done
+            fi
+
+            if [[ $EXPOSURE_DATA == metabrain_cortex* ]]; then
+            for ((k=1; k <= 1257;k+=50))
+                do
+
+                echo "export START=${k}
+                export END=$((${k}+50))
+
+                export EXPOSURE_DATA=${EXPOSURE_DATA}
+                export OUTCOME=${OUTCOME}
+
+                Rscript ${EXPOSURE_DATA}_${OUTCOME}/script_liberal_r2_0.2_${EXPOSURE_DATA}_${OUTCOME}.R" > ${EXPOSURE_DATA}_${OUTCOME}/${EXPOSURE_DATA}_parallel_scripts/script_liberal_r2_0.2_${EXPOSURE_DATA}_${OUTCOME}_${k}.sh
+
+                done
+            fi
 fi

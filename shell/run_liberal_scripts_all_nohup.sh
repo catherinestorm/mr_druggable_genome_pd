@@ -27,4 +27,24 @@ else
                 done
             fi
 
+            if [[ $EXPOSURE_DATA == metabrain_bg* ]]; then
+            for ((k=1; k <= 107;k+=50))
+                do
+
+                nohup bash ${EXPOSURE_DATA}_${OUTCOME}/${EXPOSURE_DATA}_parallel_scripts/script_liberal_r2_0.2_${EXPOSURE_DATA}_${OUTCOME}_${k}.sh &> ${EXPOSURE_DATA}_${OUTCOME}/${EXPOSURE_DATA}_parallel_scripts/nohup_script_liberal_r2_0.2_${EXPOSURE_DATA}_${OUTCOME}_${k}.log &
+
+                done
+            fi
+
+            if [[ $EXPOSURE_DATA == metabrain_cortex* ]]; then
+            for ((k=1; k <= 1257;k+=50))
+                do
+
+                nohup bash ${EXPOSURE_DATA}_${OUTCOME}/${EXPOSURE_DATA}_parallel_scripts/script_liberal_r2_0.2_${EXPOSURE_DATA}_${OUTCOME}_${k}.sh &> ${EXPOSURE_DATA}_${OUTCOME}/${EXPOSURE_DATA}_parallel_scripts/nohup_script_liberal_r2_0.2_${EXPOSURE_DATA}_${OUTCOME}_${k}.log &
+
+                wait
+
+                done
+            fi
+
 fi

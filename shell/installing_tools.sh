@@ -3,7 +3,7 @@
 
 # Install some common utilities # ? do i need this
 sudo apt-get update
-sudo apt-get install gcc make zlib1g-dev libbz2-dev liblzma-dev libssl-dev libcurl4-openssl-dev autoconf g++ pkg-config unzip libxml2-dev libncurses5-dev libncursesw5-dev -y
+sudo apt-get install gcc make zlib1g-dev libbz2-dev liblzma-dev libssl-dev libgmp-dev libcurl4-openssl-dev autoconf g++ pkg-config unzip libxml2-dev libncurses5-dev libncursesw5-dev -y
 
 
 # Install METAL for GWAS meta-analysis
@@ -26,9 +26,19 @@ sudo su - -c "R -e \"install.packages('dplyr', repos='http://cran.rstudio.com/')
 sudo su - -c "R -e \"install.packages('devtools', repos='http://cran.rstudio.com/')\""
 sudo su - -c "R -e \"install.packages('stringr', repos='http://cran.rstudio.com/')\""
 sudo su - -c "R -e \"install.packages('forestplot', repos='http://cran.rstudio.com/')\""
+sudo su - -c "R -e \"install.packages('remotes', repos='http://cran.rstudio.com/')\""
 
-
-sudo apt-get install libgmp-dev
 
 sudo su - -c "R -e \"devtools::install_github('MRCIEU/TwoSampleMR')\""
 sudo su - -c "R -e \"install.packages('MendelianRandomization', repos='http://cran.rstudio.com/')\""
+sudo su - -c "R -e \"remotes::install_github('chr1swallace/coloc')\""
+
+sudo su - -c "R -e \"install.packages('BiocManager')\""
+sudo su - -c "R -e \"BiocManager::install(version = '3.10')\""
+sudo su - -c "R -e \"BiocManager::install('biomaRt')\""
+
+
+# crossmap
+sudo apt-get update
+sudo apt-get install python3-pip
+pip3 install CrossMap

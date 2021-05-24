@@ -38,7 +38,9 @@ bash ./mr_druggable_genome_pd/shell/eqtl_data_download.sh
 Specify your exposure data. Example below.
 ```bash
 echo "psychencode
-eqtlgen" > exposure_data.txt
+eqtlgen
+metabrain_bg
+metabrain_cortex" > exposure_data.txt
 ```
 
 

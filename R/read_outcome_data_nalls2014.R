@@ -3,7 +3,7 @@
 ### load outcome data
 
 out <- read_outcome_data(snps = exp$SNP,
-                                     filename = "outcome_data/pd_risk_discovery_discovery_risk.txt",
+                                     filename = "outcome_data/pd_discovery_risk.txt",
                                      sep = "\t",
                                      snp_col = str_c("rsid_", EXPOSURE_DATA),
                                      beta_col = "Effect",

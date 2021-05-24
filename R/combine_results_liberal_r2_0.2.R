@@ -19,6 +19,7 @@ full_results <- data.frame()
 
 for (i in 1:length(file_list_res)) {
   temp_data <- read_tsv(file_list_res[i])
+  temp_data <- temp_data[,!(names(temp_data)=="fdr_qval")]
   full_results <- rbind(full_results, temp_data)
 }
 
@@ -54,15 +55,19 @@ write.table(full_results_significant, str_c("full_results_liberal_r2_0.2_", EXPO
 file_list_qc <- str_subset(file_list, "egger")
 file_list_qc <- str_subset(file_list_qc, "^(?!.*full)")
 
-# read in  each file and populate a data frame
-full_results_qc <- data.frame()
 
-for (i in 1:length(file_list_qc)) {
-  temp_data <- read_tsv(file_list_qc[i])
-  full_results_qc <- rbind(full_results_qc, temp_data)
+if (length(file_list_qc) > 0) {
+    full_results_qc <- data.frame()
+
+    for (i in 1:length(file_list_qc)) {
+      temp_data <- read_tsv(file_list_qc[i])
+      full_results_qc <- rbind(full_results_qc, temp_data)
+    }
+
+    write.table(full_results_qc, str_c("full_results_liberal_r2_0.2_egger_cochransq_", EXPOSURE_DATA, "_", OUTCOME, ".txt"), sep = "\t", row.names = F)
 }
+# read in  each file and populate a data frame
 
-write.table(full_results_qc, str_c("full_results_liberal_r2_0.2_egger_cochransq_", EXPOSURE_DATA, "_", OUTCOME, ".txt"), sep = "\t", row.names = F)
 
 
 

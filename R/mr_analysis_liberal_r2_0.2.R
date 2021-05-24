@@ -54,6 +54,8 @@ if (plyr::empty(mr_mrbase0.2) == FALSE) {
   all_res[data_for_qval, "fdr_qval"] <- p.adjust(all_res[data_for_qval, "p"], method = "fdr")
 
   write.table(all_res, str_c(EXPOSURE_DATA, "_", OUTCOME, "/results/", "results_liberal_r2_0.2_", EXPOSURE_DATA, "_", OUTCOME, "_", START, ".txt"), sep = "\t", row.names = F)
+} else {
+    mr_mrbase0.2_keep <- data.frame()
 }
 
 

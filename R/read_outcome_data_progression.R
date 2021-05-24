@@ -14,4 +14,3 @@ out <- read_outcome_data(snps = exp$SNP,
                          samplesize_col = "N",
                          phenotype_col = "outcome"
                          )
-  
