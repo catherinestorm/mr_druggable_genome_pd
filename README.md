@@ -11,7 +11,7 @@ This code can be used for any QTL data and any disease outcome.
 
 ## Citation
 If you use the code, please cite:
-[Storm CS, Kia DA, Almramhi M, Bandres-Ciga S, Finan C, Hingorani AD, International Parkinson’s Disease Genomics Consortium (IPDGC), Wood NW. "Finding drug targeting mechanisms with genetic evidence for Parkinson’s disease." Nature Communications [accepted]. 2020.](https://www.biorxiv.org/content/10.1101/2020.07.24.208975v1)
+[Storm CS, Kia DA, Almramhi M, Bandres-Ciga S, Finan C, Hingorani AD, International Parkinson’s Disease Genomics Consortium (IPDGC), Wood NW. "Finding drug targeting mechanisms with genetic evidence for Parkinson’s disease." Nature Communications [accepted]. 2021.](https://www.biorxiv.org/content/10.1101/2020.07.24.208975v1)
 
 
 
