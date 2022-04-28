@@ -1,7 +1,7 @@
 # mr_druggable_genome_pd
 
 ## Introduction
-This is a collection of scripts used in a Mendelian randomization analysis for the druggable genome in Parkinson's disease. Full methods can be found [here](https://www.biorxiv.org/content/10.1101/2020.07.24.208975v1).
+This is a collection of scripts used in a Mendelian randomization analysis for the druggable genome in Parkinson's disease. Full methods can be found [here](https://www.nature.com/articles/s41467-021-26280-1).
 
 This code can be used for any QTL data and any disease outcome.
 * You will need to provide the druggable genome file. The publicly available version of the druggable genome provided by [Finan at al.](https://pubmed.ncbi.nlm.nih.gov/28356508/) can be used instead of `druggable_genome_new.txt`.
@@ -11,7 +11,7 @@ This code can be used for any QTL data and any disease outcome.
 
 ## Citation
 If you use the code, please cite:
-[Storm CS, Kia DA, Almramhi M, Bandres-Ciga S, Finan C, Hingorani AD, International Parkinson’s Disease Genomics Consortium (IPDGC), Wood NW. "Finding drug targeting mechanisms with genetic evidence for Parkinson’s disease." Nature Communications [accepted]. 2021.](https://www.biorxiv.org/content/10.1101/2020.07.24.208975v1)
+[Storm CS, Kia DA, Almramhi M, Bandres-Ciga S, Finan C, Hingorani AD, International Parkinson’s Disease Genomics Consortium (IPDGC), Wood NW. "Finding drug targeting mechanisms with genetic evidence for Parkinson’s disease." Nature Communications [accepted]. 2021.](https://www.nature.com/articles/s41467-021-26280-1)
 
 
 
